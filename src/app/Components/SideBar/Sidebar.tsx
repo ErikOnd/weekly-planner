@@ -40,32 +40,34 @@ export function Sidebar(props: SidebarProps) {
 					<Text size="sm" className={styles["email"]}>john.doe@example.com</Text>
 				</div>
 			</div>
-			<div className={styles["week-slider-section"]}>
-				<WeeklySlider baseDate={baseDate} rangeLabel={rangeLabel} setBaseDate={setBaseDate} />
-				{isCurrentWeek(baseDate) && (
-					<div className={styles["current-week-indicator"]}>
-						<Text>Current Week</Text>
-					</div>
-				)}
-			</div>
-			<div className={styles["remember-section"]}>
-				<div className={styles["remember-header-row"]}>
-					<Text size="xl" className={styles["remember-header"]}>
-						General Todos
-					</Text>
-					<button
-						type="button"
-						className={styles["add-header-button"]}
-						onClick={() => setIsAddOpen(true)}
-						aria-label="Add new item"
-						aria-haspopup="dialog"
-						aria-expanded={isAddOpen}
-					>
-						<Icon name="plus" />
-					</button>
+			<div className={styles["sticky-section"]}>
+				<div className={styles["week-slider-section"]}>
+					<WeeklySlider baseDate={baseDate} rangeLabel={rangeLabel} setBaseDate={setBaseDate} />
+					{isCurrentWeek(baseDate) && (
+						<div className={styles["current-week-indicator"]}>
+							<Text>Current Week</Text>
+						</div>
+					)}
 				</div>
-				<div className={styles["remember-items"]}>
-					{generalTodos.map((label, idx) => <Checkbox key={idx} label={label} />)}
+				<div className={styles["remember-section"]}>
+					<div className={styles["remember-header-row"]}>
+						<Text size="xl" className={styles["remember-header"]}>
+							General Todos
+						</Text>
+						<button
+							type="button"
+							className={styles["add-header-button"]}
+							onClick={() => setIsAddOpen(true)}
+							aria-label="Add new item"
+							aria-haspopup="dialog"
+							aria-expanded={isAddOpen}
+						>
+							<Icon name="plus" />
+						</button>
+					</div>
+					<div className={styles["remember-items"]}>
+						{generalTodos.map((label, idx) => <Checkbox key={idx} label={label} />)}
+					</div>
 				</div>
 			</div>
 			<div className={styles["settings-section"]}>

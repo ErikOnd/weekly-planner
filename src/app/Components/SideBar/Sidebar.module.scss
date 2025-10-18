@@ -60,7 +60,13 @@
 		text-overflow: ellipsis;
 	}
 
+	.sticky-section {
+		position: sticky;
+		top:0;
+	}
+
 	.week-slider-section {
+
 		padding: var(--space-lg);
 		border-bottom: .1rem solid var(--color-border);
 
@@ -78,8 +84,6 @@
 	}
 
 	.remember-section {
-		position: sticky;
-		top:0;
 		padding-block: var(--space-lg);
 		border-bottom: .1rem solid var(--color-border);
 	}

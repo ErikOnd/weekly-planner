@@ -9,6 +9,10 @@
 	border-radius: variables.$radius-lg;
 	border: .1rem solid var(--color-border);
 
+	&.is-today {
+		border-color: var(--color-primary);
+	}
+
 	.date {
 		@include typography.text-base;
 		display: flex;
