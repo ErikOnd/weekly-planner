@@ -29,11 +29,7 @@ export function Button(props: ButtonProps) {
 			className={clsx(styles.button, styles[variant], className)}
 			{...rest}
 		>
-			{wrapText ? (
-				<Text size={size} fontWeight={fontWeight}>{children}</Text>
-			) : (
-				children
-			)}
+			{wrapText ? <Text size={size} fontWeight={fontWeight}>{children}</Text> : children}
 		</button>
 	);
 }

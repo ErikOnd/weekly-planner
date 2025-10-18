@@ -2,12 +2,12 @@ import profilePlaceholder from "@assets/images/profile-image-placeholder.jpg";
 import Checkbox from "@atoms/Checkbox/Checkbox";
 import { Icon } from "@atoms/Icons/Icon";
 import { Text } from "@atoms/Text/Text";
+import { AddTaskModal } from "@components/AddTaskModal/AddTaskModal";
 import WeeklySlider from "@components/WeeklySlider/WeeklySlider";
 import { isCurrentWeek } from "@utils/usCurrentWeek";
 import Image from "next/image";
-import styles from "./Sidebar.module.scss";
-import { AddTaskModal } from "@components/AddTaskModal/AddTaskModal";
 import { useState } from "react";
+import styles from "./Sidebar.module.scss";
 
 type SidebarProps = {
 	baseDate: Date;
@@ -65,9 +65,7 @@ export function Sidebar(props: SidebarProps) {
 					</button>
 				</div>
 				<div className={styles["remember-items"]}>
-					{generalTodos.map((label, idx) => (
-						<Checkbox key={idx} label={label} />
-					))}
+					{generalTodos.map((label, idx) => <Checkbox key={idx} label={label} />)}
 				</div>
 			</div>
 			<div className={styles["settings-section"]}>
