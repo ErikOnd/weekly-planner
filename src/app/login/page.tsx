@@ -1,37 +1,37 @@
-"use client"
+"use client";
 
 import { useRouter } from "next/navigation";
-import {createClient} from "../../utils/supabase/component"
 import { useState } from "react";
+import { createClient } from "../../utils/supabase/component";
 
 export default function LoginPage() {
-	const router = useRouter()
-	const supabase = createClient()
+	const router = useRouter();
+	const supabase = createClient();
 
-	const [email, setEmail] = useState("")
-	const [password, setPassword] = useState("")
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 
 	async function logIn() {
-		const {error} = await supabase.auth.signInWithPassword({email, password})
+		const { error } = await supabase.auth.signInWithPassword({ email, password });
 		if (error) {
-			console.error(error)
+			console.error(error);
 		}
-		router.push('/')
+		router.push("/");
 	}
 
 	async function signUp() {
-		const {error} = await supabase.auth.signUp({email, password})
+		const { error } = await supabase.auth.signUp({ email, password });
 		if (error) {
-			console.error(error)
+			console.error(error);
 		}
-		router.push('/')
+		router.push("/");
 	}
 
 	return (
 		<main>
 			<form>
 				<label htmlFor="email">Email:</label>
-				<input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+				<input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
 				<label htmlFor="password">Password:</label>
 				<input
 					id="password"
@@ -47,5 +47,5 @@ export default function LoginPage() {
 				</button>
 			</form>
 		</main>
-	)
+	);
 }
