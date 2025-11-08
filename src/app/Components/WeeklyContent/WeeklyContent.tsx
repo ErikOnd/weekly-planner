@@ -1,6 +1,7 @@
 "use client";
-import { DailyTextareaBlock } from "@components/DailyTextareaBlock/DailyTextareaBlock";
 import styles from "./WeeklyContent.module.scss";
+
+import { DailyTextareaBlock } from "@components/DailyTextareaBlock/DailyTextareaBlock";
 
 type WeeklyContentProps = {
 	selectedDate: Date;

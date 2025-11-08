@@ -1,6 +1,7 @@
+import styles from "./SmartTextarea.module.scss";
+
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import styles from "./SmartTextarea.module.scss";
 
 type SmartTextareaProps = {
 	textareaDate: Date;

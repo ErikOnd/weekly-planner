@@ -1,4 +1,5 @@
 "use client";
+import styles from "./SmartEditor.module.scss";
 
 import { en } from "@blocknote/core/locales";
 import { BlockNoteView } from "@blocknote/mantine";
@@ -6,7 +7,6 @@ import "@blocknote/mantine/style.css";
 import { filterSuggestionItems } from "@blocknote/core";
 import { SuggestionMenuController, useCreateBlockNote } from "@blocknote/react";
 import { getSlashMenuItemsWithAliases } from "@utils/blocknoteSlashMenu";
-import styles from "./SmartEditor.module.scss";
 
 export default function SmartEditor() {
 	const editor = useCreateBlockNote({

@@ -1,6 +1,8 @@
+import styles from "./DesktopContent.module.scss";
+
 import { DailyTextareaBlock } from "@components/DailyTextareaBlock/DailyTextareaBlock";
 import { getCurrentWeek } from "@utils/getCurrentWeek";
-import styles from "./DesktopContent.module.scss";
+
 
 type DesktopContentProps = {
 	baseDate: Date;

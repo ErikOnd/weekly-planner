@@ -1,3 +1,5 @@
+import styles from "./Sidebar.module.scss";
+
 import profilePlaceholder from "@assets/images/profile-image-placeholder.jpg";
 import Checkbox from "@atoms/Checkbox/Checkbox";
 import { Icon } from "@atoms/Icons/Icon";
@@ -7,7 +9,6 @@ import WeeklySlider from "@components/WeeklySlider/WeeklySlider";
 import { isCurrentWeek } from "@utils/usCurrentWeek";
 import Image from "next/image";
 import { useState } from "react";
-import styles from "./Sidebar.module.scss";
 
 type SidebarProps = {
 	baseDate: Date;

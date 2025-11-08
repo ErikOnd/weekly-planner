@@ -1,6 +1,7 @@
+import styles from "./Checkbox.module.scss";
+
 import { Text } from "@atoms/Text/Text";
 import { useId } from "react";
-import styles from "./Checkbox.module.scss";
 
 type CheckboxProps = {
 	label: string;

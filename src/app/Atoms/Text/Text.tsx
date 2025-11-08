@@ -1,6 +1,7 @@
+import styles from "./Text.module.scss";
+
 import clsx from "clsx";
 import { ReactNode } from "react";
-import styles from "./Text.module.scss";
 
 type TextProps = {
 	size?: "xs" | "sm" | "base" | "lg" | "xl";

@@ -1,6 +1,6 @@
-import styles from "./LoginPage.module.scss"
+import styles from "./LoginPage.module.scss";
 
-import {AuthForm} from "@components/auth/AuthForm";
+import { AuthForm } from "@components/auth/AuthForm";
 
 export default function LoginPage() {
 	return (

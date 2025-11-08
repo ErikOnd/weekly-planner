@@ -1,6 +1,7 @@
+import styles from "./Headline.module.scss";
+
 import clsx from "clsx";
 import { ReactNode } from "react";
-import styles from "./Headline.module.scss";
 
 type HeadlineProps = {
 	as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";

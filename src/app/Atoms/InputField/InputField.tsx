@@ -13,15 +13,15 @@ type InputFieldProps = {
 };
 
 export function InputField({
-	                           value,
-	                           onChange,
-	                           id,
-	                           name,
-	                           placeholder = "Add a new task",
-	                           type = "text",
-	                           required = false,
-	                           disabled = false
-                           }: InputFieldProps) {
+	value,
+	onChange,
+	id,
+	name,
+	placeholder = "Add a new task",
+	type = "text",
+	required = false,
+	disabled = false,
+}: InputFieldProps) {
 	return (
 		<input
 			className={styles["input-field"]}

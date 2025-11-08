@@ -1,5 +1,6 @@
-import Checkbox from "@atoms/Checkbox/Checkbox";
 import styles from "./TaskItem.module.scss";
+
+import Checkbox from "@atoms/Checkbox/Checkbox";
 
 type TaskItemProps = {
 	taskName: string;

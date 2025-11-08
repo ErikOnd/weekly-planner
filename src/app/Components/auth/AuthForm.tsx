@@ -1,16 +1,15 @@
 "use client";
-
 import styles from "./AuthForm.module.scss";
 
-import {FormEvent, useState} from "react";
-import {Button} from "@atoms/Button/Button";
-import {Text} from "@atoms/Text/Text";
-import {PasswordField} from "./PasswordField";
-import {useAuthActions} from "@hooks/useAuthActions";
-import {InputField} from "@atoms/InputField/InputField";
+import { Button } from "@atoms/Button/Button";
+import { InputField } from "@atoms/InputField/InputField";
+import { Text } from "@atoms/Text/Text";
+import { useAuthActions } from "@hooks/useAuthActions";
+import { FormEvent, useState } from "react";
+import { PasswordField } from "./PasswordField";
 
 export function AuthForm() {
-	const {loading, logIn, signUp, sendResetPassword, errorMsg, infoMsg} = useAuthActions();
+	const { loading, logIn, signUp, sendResetPassword, errorMsg, infoMsg } = useAuthActions();
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -44,7 +43,7 @@ export function AuthForm() {
 					onChange={(e) => setEmail(e.target.value)}
 				/>
 
-				<PasswordField value={password} onChange={setPassword} disabled={loading}/>
+				<PasswordField value={password} onChange={setPassword} disabled={loading} />
 			</div>
 
 			<div className={styles.footerRow}>
@@ -59,8 +58,13 @@ export function AuthForm() {
 				<Button type="submit" variant="primary" disabled={loading} fontWeight={700}>
 					{loading ? "Signing in..." : "Log in"}
 				</Button>
-				<Button type="button" variant="secondary" onClick={() => signUp(email, password)} disabled={loading}
-				        fontWeight={700}>
+				<Button
+					type="button"
+					variant="secondary"
+					onClick={() => signUp(email, password)}
+					disabled={loading}
+					fontWeight={700}
+				>
 					{loading ? "Please wait..." : "Sign up"}
 				</Button>
 			</div>

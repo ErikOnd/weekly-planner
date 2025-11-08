@@ -1,11 +1,11 @@
 "use client";
+import styles from "./PasswordField.module.scss";
 
-
-import { useId, useState } from "react";
 import { Button } from "@atoms/Button/Button";
+import { Icon } from "@atoms/Icons/Icon";
+import { InputField } from "@atoms/InputField/InputField";
 import { Text } from "@atoms/Text/Text";
-import {InputField} from "@atoms/InputField/InputField";
-
+import { useId, useState } from "react";
 
 export type PasswordFieldProps = {
 	label?: string;
@@ -17,26 +17,24 @@ export type PasswordFieldProps = {
 	autoComplete?: string;
 };
 
-
 export function PasswordField({
-	                              label = "Password",
-	                              value,
-	                              onChange,
-	                              placeholder = "Your password",
-	                              disabled,
-	                              name = "password",
-	                              autoComplete = "current-password",
-                              }: PasswordFieldProps) {
+	label = "Password",
+	value,
+	onChange,
+	placeholder = "Your password",
+	disabled,
+	name = "password",
+	autoComplete = "current-password",
+}: PasswordFieldProps) {
 	const id = useId();
 	const [show, setShow] = useState(false);
-
 
 	return (
 		<div>
 			<label htmlFor={id}>
 				<Text as="span" size="sm" fontWeight={600}>{label}</Text>
 			</label>
-			<div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+			<div className={styles["password-wrapper"]}>
 				<InputField
 					id={id}
 					name={name}
@@ -49,15 +47,15 @@ export function PasswordField({
 					onChange={(e) => onChange(e.target.value)}
 				/>
 				<Button
+					wrapText={false}
 					type="button"
 					variant="secondary"
 					onClick={() => setShow((s) => !s)}
 					disabled={disabled}
 					aria-pressed={show}
 					aria-label={show ? "Hide password" : "Show password"}
-					style={{ marginTop: 6 }}
 				>
-					{show ? "Hide" : "Show"}
+					{show ? <Icon name="eye" /> : <Icon name="closed-eye" />}
 				</Button>
 			</div>
 		</div>

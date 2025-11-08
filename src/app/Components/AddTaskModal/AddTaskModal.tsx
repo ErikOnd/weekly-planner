@@ -1,10 +1,11 @@
+import styles from "./AddTaskModal.module.scss";
+
 import { Button } from "@atoms/Button/Button";
 import { Icon } from "@atoms/Icons/Icon";
 import { InputField } from "@atoms/InputField/InputField";
 import { Text } from "@atoms/Text/Text";
 import * as Dialog from "@radix-ui/react-dialog";
 import { FormEvent, useState } from "react";
-import styles from "./AddTaskModal.module.scss";
 
 type AddTaskModalProps = {
 	open: boolean;

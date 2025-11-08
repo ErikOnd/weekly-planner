@@ -1,11 +1,14 @@
 import ChevronLeft from "@assets/icons/chevron-left.svg";
 import ChevronRight from "@assets/icons/chevron-right.svg";
+import ClosedEye from "@assets/icons/closed-eye.svg";
+import Eye from "@assets/icons/eye.svg";
 import Pencil from "@assets/icons/pencil.svg";
 import Plus from "@assets/icons/plus.svg";
 import Questionmark from "@assets/icons/questionmark.svg";
 import Settings from "@assets/icons/settings.svg";
 import SignOut from "@assets/icons/sign-out.svg";
 import Star from "@assets/icons/star.svg";
+
 import clsx from "clsx";
 
 const icons = {
@@ -17,6 +20,8 @@ const icons = {
 	"sign-out": SignOut,
 	"star": Star,
 	"pencil": Pencil,
+	"eye": Eye,
+	"closed-eye": ClosedEye,
 };
 
 type IconName = keyof typeof icons;

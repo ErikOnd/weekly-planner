@@ -1,4 +1,5 @@
 "use client";
+import styles from "./DailyTextareaBlock.module.scss";
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef } from "react";
@@ -9,7 +10,7 @@ const SmartEditor = dynamic(() => import("@atoms/SmartEditor/SmartEditor"), {
 import { Text } from "@atoms/Text/Text";
 import { formatToDayLabel } from "@utils/formatToDayLabel";
 import clsx from "clsx";
-import styles from "./DailyTextareaBlock.module.scss";
+
 
 type DailyTextareaProps = {
 	textareaDate: Date;

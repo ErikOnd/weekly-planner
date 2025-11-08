@@ -1,7 +1,8 @@
+import styles from "./DesktopNavigation.module.scss";
+
 import logoText from "@assets/logo/logo-text.png";
 import { Text } from "@atoms/Text/Text";
 import Image from "next/image";
-import styles from "./DesktopNavigation.module.scss";
 
 type DesktopNavigationProps = {
 	rangeLabel: string;

@@ -1,6 +1,7 @@
+import styles from "./WeeklySlider.module.scss";
+
 import { Icon } from "@atoms/Icons/Icon";
 import { Text } from "@atoms/Text/Text";
-import styles from "./WeeklySlider.module.scss";
 
 type WeeklySlider = {
 	baseDate: Date;

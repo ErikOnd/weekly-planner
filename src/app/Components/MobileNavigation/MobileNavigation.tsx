@@ -1,4 +1,5 @@
 "use client";
+import styles from "./MobileNavigation.module.scss";
 
 import logoText from "@assets/logo/logo-text.png";
 import { Text } from "@atoms/Text/Text";
@@ -7,7 +8,6 @@ import { getCurrentWeek } from "@utils/getCurrentWeek";
 import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import styles from "./MobileNavigation.module.scss";
 
 type MobileNavigationProps = {
 	content: "weekly" | "remember" | "profile";

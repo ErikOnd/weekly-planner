@@ -1,27 +1,22 @@
 "use client";
 
-
-import {useCallback, useState} from "react";
-import {useRouter} from "next/navigation";
-import {createClient} from "@utils/supabase/client";
-import {mapAuthError} from "@utils/authErrors";
-
+import { mapAuthError } from "@utils/authErrors";
+import { createClient } from "@utils/supabase/client";
+import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
 
 export function useAuthActions() {
 	const router = useRouter();
 	const supabase = createClient();
 
-
 	const [loading, setLoading] = useState(false);
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
 	const [infoMsg, setInfoMsg] = useState<string | null>(null);
-
 
 	const clearMessages = useCallback(() => {
 		setErrorMsg(null);
 		setInfoMsg(null);
 	}, []);
-
 
 	const logIn = useCallback(async (email: string, password: string) => {
 		clearMessages();
@@ -31,7 +26,7 @@ export function useAuthActions() {
 		}
 		setLoading(true);
 		try {
-			const {error} = await supabase.auth.signInWithPassword({email, password});
+			const { error } = await supabase.auth.signInWithPassword({ email, password });
 			if (error) {
 				setErrorMsg(mapAuthError(error, "sign_in"));
 				return;
@@ -44,7 +39,6 @@ export function useAuthActions() {
 		}
 	}, [clearMessages, router, supabase]);
 
-
 	const signUp = useCallback(async (email: string, password: string) => {
 		clearMessages();
 		if (!email || !password) {
@@ -53,7 +47,7 @@ export function useAuthActions() {
 		}
 		setLoading(true);
 		try {
-			const {data, error} = await supabase.auth.signUp({email, password});
+			const { data, error } = await supabase.auth.signUp({ email, password });
 			if (error) {
 				setErrorMsg(mapAuthError(error, "sign_up"));
 				return;
@@ -70,7 +64,6 @@ export function useAuthActions() {
 		}
 	}, [clearMessages, router, supabase]);
 
-
 	const sendResetPassword = useCallback(async (email: string) => {
 		clearMessages();
 		if (!email) {
@@ -79,7 +72,7 @@ export function useAuthActions() {
 		}
 		setLoading(true);
 		try {
-			const {error} = await supabase.auth.resetPasswordForEmail(email, {
+			const { error } = await supabase.auth.resetPasswordForEmail(email, {
 				redirectTo: typeof window !== "undefined" ? `${location.origin}/auth/callback` : undefined,
 			});
 			if (error) {
@@ -94,6 +87,5 @@ export function useAuthActions() {
 		}
 	}, [clearMessages, supabase]);
 
-
-	return {loading, errorMsg, infoMsg, setErrorMsg, setInfoMsg, logIn, signUp, sendResetPassword};
+	return { loading, errorMsg, infoMsg, setErrorMsg, setInfoMsg, logIn, signUp, sendResetPassword };
 }

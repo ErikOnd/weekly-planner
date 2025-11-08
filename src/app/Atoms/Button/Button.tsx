@@ -1,7 +1,8 @@
+import styles from "./Button.module.scss";
+
 import { Text } from "@atoms/Text/Text";
 import clsx from "clsx";
 import { ButtonHTMLAttributes, ReactNode } from "react";
-import styles from "./Button.module.scss";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 	variant?: "primary" | "secondary";

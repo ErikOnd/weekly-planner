@@ -1,7 +1,8 @@
+import styles from "./RememberContent.module.scss";
+
 import { AddTaskModal } from "@components/AddTaskModal/AddTaskModal";
 import { TaskItem } from "@components/TaskItem/TaskItem";
 import { useState } from "react";
-import styles from "./RememberContent.module.scss";
 
 type RememberContentProps = {
 	rememberItems?: string[];
