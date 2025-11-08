@@ -1,7 +1,8 @@
 export type AuthContext = "sign_in" | "sign_up" | "reset";
+import { AuthError } from "@supabase/supabase-js";
 
 export function mapAuthError(err: unknown, context: AuthContext): string {
-	const raw = String((err as any)?.message || "").toLowerCase();
+	const raw = String((err as AuthError)?.message || "").toLowerCase();
 
 	if (!raw && context === "reset") return "We couldn't send the reset email. Please try again.";
 	if (raw.includes("invalid login credentials")) return "Email or password is incorrect.";
@@ -18,5 +19,5 @@ export function mapAuthError(err: unknown, context: AuthContext): string {
 		return "Your password is too weak. Please use at least 6 characters.";
 	}
 
-	return (err as any)?.message ?? "Something went wrong. Please try again.";
+	return (err as AuthError)?.message ?? "Something went wrong. Please try again.";
 }
