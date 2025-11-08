@@ -1,4 +1,5 @@
 "use client";
+
 import styles from "@components/Homepage/HomePage.module.scss";
 
 import { DesktopContent } from "@components/DesktopContent/DesktopContent";

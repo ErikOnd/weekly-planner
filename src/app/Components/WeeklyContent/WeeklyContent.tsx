@@ -1,4 +1,5 @@
 "use client";
+
 import styles from "./WeeklyContent.module.scss";
 
 import { DailyTextareaBlock } from "@components/DailyTextareaBlock/DailyTextareaBlock";

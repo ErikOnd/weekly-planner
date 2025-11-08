@@ -1,4 +1,5 @@
 "use client";
+
 import styles from "./PasswordField.module.scss";
 
 import { Button } from "@atoms/Button/Button";

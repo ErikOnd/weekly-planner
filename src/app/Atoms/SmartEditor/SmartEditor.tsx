@@ -1,4 +1,5 @@
 "use client";
+
 import styles from "./SmartEditor.module.scss";
 
 import { en } from "@blocknote/core/locales";

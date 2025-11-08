@@ -1,4 +1,5 @@
 "use client";
+
 import styles from "./MobileNavigation.module.scss";
 
 import logoText from "@assets/logo/logo-text.png";
