@@ -1,0 +1,99 @@
+"use client";
+
+
+import {useCallback, useState} from "react";
+import {useRouter} from "next/navigation";
+import {createClient} from "@utils/supabase/client";
+import {mapAuthError} from "@utils/authErrors";
+
+
+export function useAuthActions() {
+	const router = useRouter();
+	const supabase = createClient();
+
+
+	const [loading, setLoading] = useState(false);
+	const [errorMsg, setErrorMsg] = useState<string | null>(null);
+	const [infoMsg, setInfoMsg] = useState<string | null>(null);
+
+
+	const clearMessages = useCallback(() => {
+		setErrorMsg(null);
+		setInfoMsg(null);
+	}, []);
+
+
+	const logIn = useCallback(async (email: string, password: string) => {
+		clearMessages();
+		if (!email || !password) {
+			setErrorMsg("Please enter both email and password.");
+			return;
+		}
+		setLoading(true);
+		try {
+			const {error} = await supabase.auth.signInWithPassword({email, password});
+			if (error) {
+				setErrorMsg(mapAuthError(error, "sign_in"));
+				return;
+			}
+			router.push("/");
+		} catch (err) {
+			setErrorMsg(mapAuthError(err, "sign_in"));
+		} finally {
+			setLoading(false);
+		}
+	}, [clearMessages, router, supabase]);
+
+
+	const signUp = useCallback(async (email: string, password: string) => {
+		clearMessages();
+		if (!email || !password) {
+			setErrorMsg("Please enter both email and password.");
+			return;
+		}
+		setLoading(true);
+		try {
+			const {data, error} = await supabase.auth.signUp({email, password});
+			if (error) {
+				setErrorMsg(mapAuthError(error, "sign_up"));
+				return;
+			}
+			if (!data?.session) {
+				setInfoMsg("Success! Please check your email to confirm your account.");
+				return;
+			}
+			router.push("/");
+		} catch (err) {
+			setErrorMsg(mapAuthError(err, "sign_up"));
+		} finally {
+			setLoading(false);
+		}
+	}, [clearMessages, router, supabase]);
+
+
+	const sendResetPassword = useCallback(async (email: string) => {
+		clearMessages();
+		if (!email) {
+			setErrorMsg("Enter your email first to receive a reset link.");
+			return;
+		}
+		setLoading(true);
+		try {
+			const {error} = await supabase.auth.resetPasswordForEmail(email, {
+				redirectTo: typeof window !== "undefined" ? `${location.origin}/auth/callback` : undefined,
+			});
+			if (error) {
+				setErrorMsg(mapAuthError(error, "reset"));
+				return;
+			}
+			setInfoMsg("Password reset email sent. Please check your inbox.");
+		} catch (err) {
+			setErrorMsg(mapAuthError(err, "reset"));
+		} finally {
+			setLoading(false);
+		}
+	}, [clearMessages, supabase]);
+
+
+	return {loading, errorMsg, infoMsg, setErrorMsg, setInfoMsg, logIn, signUp, sendResetPassword};
+}

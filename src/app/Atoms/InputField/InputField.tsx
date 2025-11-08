@@ -6,24 +6,33 @@ type InputFieldProps = {
 	id?: string;
 	name?: string;
 	placeholder?: string;
+	type?: string;
+	autoComplete?: string;
+	required?: boolean;
+	disabled?: boolean;
 };
 
 export function InputField({
-	value,
-	onChange,
-	id,
-	name,
-	placeholder = "Add a new task",
-}: InputFieldProps) {
+	                           value,
+	                           onChange,
+	                           id,
+	                           name,
+	                           placeholder = "Add a new task",
+	                           type = "text",
+	                           required = false,
+	                           disabled = false
+                           }: InputFieldProps) {
 	return (
 		<input
 			className={styles["input-field"]}
-			type="text"
+			type={type}
 			value={value}
 			onChange={onChange}
 			placeholder={placeholder}
 			name={name}
 			id={id}
+			required={required}
+			disabled={disabled}
 		/>
 	);
 }
