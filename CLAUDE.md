@@ -58,6 +58,7 @@ Each component has its own directory with a `.tsx` file and corresponding `.modu
 ### Path Aliases
 
 Configured in `tsconfig.json`:
+
 - `@assets/*` → `src/app/assets/*`
 - `@components/*` → `src/app/Components/*`
 - `@atoms/*` → `src/app/Atoms/*`
@@ -77,6 +78,7 @@ Configured in `tsconfig.json`:
 ### Responsive Design
 
 The app has separate mobile and desktop layouts:
+
 - Uses `useMediaQuery` hook to detect viewport size (breakpoint: 1023px)
 - Mobile: `MobileNavigation` with content switching
 - Desktop: `DesktopNavigation` with `Sidebar` and `DesktopContent`
@@ -92,6 +94,7 @@ The app has separate mobile and desktop layouts:
 ### Rich Text Editor
 
 Uses BlockNote (based on ProseMirror) with Mantine styling:
+
 - Main component: `SmartEditor.tsx`
 - Custom slash menu configuration in `@utils/blocknoteSlashMenu.ts`
 - Client-side only (check for `window` before rendering)
@@ -110,6 +113,7 @@ SVGs are imported as React components using `@svgr/webpack` (configured in `next
 ## Environment Variables
 
 Required in `.env.local`:
+
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - `DATABASE_URL` (PostgreSQL connection string)
