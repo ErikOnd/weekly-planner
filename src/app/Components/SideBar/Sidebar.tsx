@@ -25,6 +25,8 @@ const DELETE_DELAY = 5000;
 export function Sidebar({ baseDate, setBaseDate, rangeLabel }: SidebarProps) {
 	const [isAddOpen, setIsAddOpen] = useState(false);
 	const [checkedTodos, setCheckedTodos] = useState<Set<string>>(new Set());
+	const [userEmail, setUserEmail] = useState<string>("");
+	const [displayName, setDisplayName] = useState<string>("");
 	const router = useRouter();
 	const supabase = createClient();
 	const { todos, loading, deleteTodo, refresh } = useGeneralTodos();
@@ -68,6 +70,29 @@ export function Sidebar({ baseDate, setBaseDate, rangeLabel }: SidebarProps) {
 	}, [isAddOpen, refresh]);
 
 	useEffect(() => {
+		const fetchUserData = async () => {
+			const { data: { user } } = await supabase.auth.getUser();
+			if (user) {
+				setUserEmail(user.email || "");
+
+				const { data: profile, error } = await supabase
+					.from("profile")
+					.select("displayName")
+					.eq("id", user.id)
+					.single();
+
+				if (error) {
+					console.error("Error fetching profile:", error);
+				} else if (profile?.displayName) {
+					setDisplayName(profile.displayName);
+				}
+			}
+		};
+
+		fetchUserData();
+	}, [supabase]);
+
+	useEffect(() => {
 		return () => {
 			deletionTimeoutsRef.current.forEach(clearTimeout);
 			deletionTimeoutsRef.current.clear();
@@ -81,8 +106,8 @@ export function Sidebar({ baseDate, setBaseDate, rangeLabel }: SidebarProps) {
 					<Image alt="profile image" src={profilePlaceholder} className={styles["profile-image"]} />
 				</button>
 				<div className={styles["profile-info"]}>
-					<Text className={styles["username"]}>John Doe</Text>
-					<Text size="sm" className={styles["email"]}>john.doe@example.com</Text>
+					<Text className={styles["username"]}>{displayName || "User"}</Text>
+					<Text size="sm" className={styles["email"]}>{userEmail}</Text>
 				</div>
 			</div>
 			<div className={styles["sticky-section"]}>
