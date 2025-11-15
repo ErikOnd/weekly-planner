@@ -1,6 +1,6 @@
 import { createClient } from "@utils/supabase/server";
 import { NextResponse } from "next/server";
-import { ensureProfileExists } from "../../actions/profile";
+import { createNewUser } from "../../actions/profile";
 
 export async function GET(request: Request) {
 	const { searchParams, origin } = new URL(request.url);
@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 			}
 
 			// Otherwise it's email verification - create profile
-			await ensureProfileExists();
+			await createNewUser();
 
 			const forwardedHost = request.headers.get("x-forwarded-host");
 			const isLocalEnv = process.env.NODE_ENV === "development";

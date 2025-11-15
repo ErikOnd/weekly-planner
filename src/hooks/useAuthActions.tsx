@@ -4,7 +4,7 @@ import { mapAuthError } from "@utils/authErrors";
 import { createClient } from "@utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
-import { ensureProfileExists } from "../app/actions/profile";
+import { checkUserExists } from "../app/actions/profile";
 
 export function useAuthActions() {
 	const router = useRouter();
@@ -32,7 +32,7 @@ export function useAuthActions() {
 				setErrorMsg(mapAuthError(error, "sign_in"));
 				return;
 			}
-			await ensureProfileExists();
+			await checkUserExists();
 			router.push("/");
 		} catch (err) {
 			setErrorMsg(mapAuthError(err, "sign_in"));
@@ -64,7 +64,7 @@ export function useAuthActions() {
 				setInfoMsg("Success! Please check your email to confirm your account.");
 				return;
 			}
-			await ensureProfileExists();
+			await checkUserExists();
 			router.push("/");
 		} catch (err) {
 			setErrorMsg(mapAuthError(err, "sign_up"));
