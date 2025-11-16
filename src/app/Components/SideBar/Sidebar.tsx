@@ -3,15 +3,17 @@
 import profilePlaceholder from "@assets/images/profile-image-placeholder.jpg";
 import Checkbox from "@atoms/Checkbox/Checkbox";
 import { Icon } from "@atoms/Icons/Icon";
+import { Spinner } from "@atoms/Spinner/Spinner";
 import { Text } from "@atoms/Text/Text";
 import { AddTaskModal } from "@components/AddTaskModal/AddTaskModal";
 import WeeklySlider from "@components/WeeklySlider/WeeklySlider";
 import { useGeneralTodos } from "@hooks/useGeneralTodos";
+import { useTodoToggle } from "@hooks/useTodoToggle";
 import { createClient } from "@utils/supabase/client";
 import { isCurrentWeek } from "@utils/usCurrentWeek";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.scss";
 
 type SidebarProps = {
@@ -20,49 +22,18 @@ type SidebarProps = {
 	rangeLabel: string;
 };
 
-const DELETE_DELAY = 5000;
-
 export function Sidebar({ baseDate, setBaseDate, rangeLabel }: SidebarProps) {
 	const [isAddOpen, setIsAddOpen] = useState(false);
-	const [checkedTodos, setCheckedTodos] = useState<Set<string>>(new Set());
 	const [userEmail, setUserEmail] = useState<string>("");
 	const [displayName, setDisplayName] = useState<string>("");
 	const router = useRouter();
 	const supabase = createClient();
 	const { todos, loading, deleteTodo, refresh } = useGeneralTodos();
-	const deletionTimeoutsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+	const { checkedTodos, handleTodoToggle } = useTodoToggle(deleteTodo);
 
 	const handleSignOut = async () => {
 		await supabase.auth.signOut();
 		router.push("/login");
-	};
-
-	const handleTodoToggle = (todoId: string, checked: boolean) => {
-		const existingTimeout = deletionTimeoutsRef.current.get(todoId);
-		if (existingTimeout) {
-			clearTimeout(existingTimeout);
-			deletionTimeoutsRef.current.delete(todoId);
-		}
-
-		setCheckedTodos(prev => {
-			const next = new Set(prev);
-			checked ? next.add(todoId) : next.delete(todoId);
-			return next;
-		});
-
-		if (checked) {
-			const timeoutId = setTimeout(() => {
-				deleteTodo(todoId);
-				deletionTimeoutsRef.current.delete(todoId);
-				setCheckedTodos(prev => {
-					const next = new Set(prev);
-					next.delete(todoId);
-					return next;
-				});
-			}, DELETE_DELAY);
-
-			deletionTimeoutsRef.current.set(todoId, timeoutId);
-		}
 	};
 
 	useEffect(() => {
@@ -91,13 +62,6 @@ export function Sidebar({ baseDate, setBaseDate, rangeLabel }: SidebarProps) {
 
 		fetchUserData();
 	}, [supabase]);
-
-	useEffect(() => {
-		return () => {
-			deletionTimeoutsRef.current.forEach(clearTimeout);
-			deletionTimeoutsRef.current.clear();
-		};
-	}, []);
 
 	return (
 		<div className={styles["sidebar"]}>
@@ -137,7 +101,7 @@ export function Sidebar({ baseDate, setBaseDate, rangeLabel }: SidebarProps) {
 					</div>
 					<div className={styles["remember-items"]}>
 						{loading
-							? <Text size="sm">Loading...</Text>
+							? <Spinner size="lg" className={styles["remember-loading"]} />
 							: todos.length === 0
 							? <Text size="sm">No todos yet. Click + to add one!</Text>
 							: (
