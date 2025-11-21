@@ -8,8 +8,7 @@ import { InputField } from "@atoms/InputField/InputField";
 import { Message } from "@atoms/Message/Message";
 import { Text } from "@atoms/Text/Text";
 import * as Dialog from "@radix-ui/react-dialog";
-import { useEffect, useRef } from "react";
-import { useFormState } from "react-dom";
+import { useActionState, useEffect, useRef } from "react";
 import { createGeneralTodo, FormState } from "../../actions/generalTodos";
 
 type AddTaskModalProps = {
@@ -25,7 +24,7 @@ const initialState: FormState = {
 
 export function AddTaskModal(props: AddTaskModalProps) {
 	const { open, setOpen, defaultValue, renderTrigger = true } = props;
-	const [state, formAction] = useFormState(createGeneralTodo, initialState);
+	const [state, formAction] = useActionState(createGeneralTodo, initialState);
 	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {

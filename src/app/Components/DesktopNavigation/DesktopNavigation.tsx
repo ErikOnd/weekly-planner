@@ -1,18 +1,18 @@
+"use client";
+
 import styles from "./DesktopNavigation.module.scss";
 
-import logoText from "@assets/logo/logo-text.png";
-import { Text } from "@atoms/Text/Text";
-import Image from "next/image";
+import {Text} from "@atoms/Text/Text";
 
 type DesktopNavigationProps = {
 	rangeLabel: string;
 };
 
-export function DesktopNavigation({ rangeLabel }: DesktopNavigationProps) {
+export function DesktopNavigation({rangeLabel}: DesktopNavigationProps) {
 	return (
 		<nav className={styles["desktop-navigation"]}>
 			<div className={styles["logo-section"]}>
-				<Image alt="logo" src={logoText} height={32} />
+				<Text size="xl" className={styles["logo-text"]}>WeeklyPlanner</Text>
 			</div>
 			<div className={styles["main-section"]}>
 				<Text size="xl">Weekly Overview</Text>

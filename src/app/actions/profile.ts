@@ -42,7 +42,7 @@ export async function createNewUser(displayName?: string) {
 		}
 
 		// Get displayName from parameter or user metadata
-		const userDisplayName = displayName || (user.user_metadata?.displayName as string) || null;
+		const userDisplayName = displayName || (user.user_metadata?.displayName as string) || "";
 
 		await prisma.profile.create({
 			data: {

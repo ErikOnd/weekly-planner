@@ -9,12 +9,12 @@ datasource db {
 }
 
 model Profile {
-  id          String       @id @db.Uuid
-  email       String       @unique
-  displayName String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  dailyNotes  DailyNote[]
+  id           String        @id @db.Uuid
+  email        String        @unique
+  displayName  String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  dailyNotes   DailyNote[]
   generalTodos GeneralTodo[]
 }
 
@@ -26,21 +26,21 @@ model DailyNote {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  profile   Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, date])
   @@index([userId, date])
 }
 
 model GeneralTodo {
-  id          String    @id @default(uuid()) @db.Uuid
-  userId      String    @db.Uuid
-  text        String
-  order       Int       @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  text      String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  profile     Profile   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profile Profile @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
