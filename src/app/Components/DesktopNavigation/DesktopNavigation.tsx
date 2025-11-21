@@ -2,13 +2,13 @@
 
 import styles from "./DesktopNavigation.module.scss";
 
-import {Text} from "@atoms/Text/Text";
+import { Text } from "@atoms/Text/Text";
 
 type DesktopNavigationProps = {
 	rangeLabel: string;
 };
 
-export function DesktopNavigation({rangeLabel}: DesktopNavigationProps) {
+export function DesktopNavigation({ rangeLabel }: DesktopNavigationProps) {
 	return (
 		<nav className={styles["desktop-navigation"]}>
 			<div className={styles["logo-section"]}>
