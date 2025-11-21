@@ -14,11 +14,11 @@ import styles from "./Sidebar.module.scss";
 
 type SidebarProps = {
 	baseDate: Date;
-	setBaseDate: (date: Date) => void;
+	setBaseDateAction: (date: Date) => void;
 	rangeLabel: string;
 };
 
-export function Sidebar({ baseDate, setBaseDate, rangeLabel }: SidebarProps) {
+export function Sidebar({ baseDate, setBaseDateAction, rangeLabel }: SidebarProps) {
 	const [isAddOpen, setIsAddOpen] = useState(false);
 	const { todos, loading, deleteTodo, refresh } = useGeneralTodos();
 	const { checkedTodos, handleTodoToggle } = useTodoToggle(deleteTodo);
@@ -31,7 +31,7 @@ export function Sidebar({ baseDate, setBaseDate, rangeLabel }: SidebarProps) {
 		<div className={styles["sidebar"]}>
 			<div className={styles["sticky-section"]}>
 				<div className={styles["week-slider-section"]}>
-					<WeeklySlider baseDate={baseDate} rangeLabel={rangeLabel} setBaseDate={setBaseDate} />
+					<WeeklySlider baseDate={baseDate} rangeLabel={rangeLabel} setBaseDate={setBaseDateAction} />
 					{isCurrentWeek(baseDate) && (
 						<div className={styles["current-week-indicator"]}>
 							<Text>Current Week</Text>
@@ -72,7 +72,7 @@ export function Sidebar({ baseDate, setBaseDate, rangeLabel }: SidebarProps) {
 					</div>
 				</div>
 			</div>
-			<AddTaskModal open={isAddOpen} setOpen={setIsAddOpen} renderTrigger={false} />
+			<AddTaskModal open={isAddOpen} onOpenAction={setIsAddOpen} renderTrigger={false} />
 		</div>
 	);
 }

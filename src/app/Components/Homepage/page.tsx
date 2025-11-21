@@ -40,11 +40,11 @@ export default function HomePage() {
 					<div className={styles["mobile-view"]}>
 						<MobileNavigation
 							content={selectedContent}
-							onChange={setSelectedContent}
+							onChangeAction={setSelectedContent}
 							selectedDate={selectedDate}
-							onSelectDate={setSelectedDate}
+							onSelectDateAction={setSelectedDate}
 							baseDate={baseDate}
-							setBaseDate={setBaseDate}
+							setBaseDateAction={setBaseDate}
 						/>
 						{renderMobileContent()}
 					</div>
@@ -53,7 +53,7 @@ export default function HomePage() {
 					<div className={styles["desktop-view"]}>
 						<DesktopNavigation rangeLabel={rangeLabel} />
 						<div className={styles["sidebar-content-section"]}>
-							<Sidebar baseDate={baseDate} setBaseDate={setBaseDate} rangeLabel={rangeLabel} />
+							<Sidebar baseDate={baseDate} setBaseDateAction={setBaseDate} rangeLabel={rangeLabel} />
 							<DesktopContent baseDate={baseDate} />
 						</div>
 					</div>

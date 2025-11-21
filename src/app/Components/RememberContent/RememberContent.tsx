@@ -41,7 +41,7 @@ export function RememberContent(props: RememberContentProps) {
 						))
 					)}
 			</div>
-			<AddTaskModal open={modalOpen} setOpen={setModalOpen} />
+			<AddTaskModal open={modalOpen} onOpenAction={setModalOpen} />
 		</div>
 	);
 }

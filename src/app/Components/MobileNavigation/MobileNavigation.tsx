@@ -10,11 +10,11 @@ import { useEffect, useRef, useState } from "react";
 
 type MobileNavigationProps = {
 	content: "weekly" | "remember" | "profile";
-	onChange: (value: "weekly" | "remember" | "profile") => void;
-	onSelectDate: (date: Date) => void;
+	onChangeAction: (value: "weekly" | "remember" | "profile") => void;
+	onSelectDateAction: (date: Date) => void;
 	selectedDate: Date;
 	baseDate: Date;
-	setBaseDate: (date: Date) => void;
+	setBaseDateAction: (date: Date) => void;
 };
 
 const navItems: { value: "weekly" | "remember" | "profile"; label: string }[] = [
@@ -24,7 +24,7 @@ const navItems: { value: "weekly" | "remember" | "profile"; label: string }[] = 
 ];
 
 export function MobileNavigation(props: MobileNavigationProps) {
-	const { content, onChange, onSelectDate, selectedDate, baseDate, setBaseDate } = props;
+	const { content, onChangeAction, onSelectDateAction, selectedDate, baseDate, setBaseDateAction } = props;
 	const { days, rangeLabel } = getCurrentWeek(baseDate);
 	const dayRefs = useRef<(HTMLButtonElement | null)[]>([]);
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -68,7 +68,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
 				{navItems.map(({ value, label }) => (
 					<button
 						key={value}
-						onClick={() => onChange(value)}
+						onClick={() => onChangeAction(value)}
 						className={clsx(styles["slider-button"], value === content && styles.active)}
 					>
 						<div className={styles["slider-button-label"]}>{label}</div>
@@ -80,7 +80,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
 				&& (
 					<>
 						<div className={styles["date-section"]}>
-							<WeeklySlider baseDate={baseDate} rangeLabel={rangeLabel} setBaseDate={setBaseDate} />
+							<WeeklySlider baseDate={baseDate} rangeLabel={rangeLabel} setBaseDate={setBaseDateAction} />
 						</div>
 						<div className={styles["calendar-section"]}>
 							{days.map(({ label, date, fullDate }, index) => (
@@ -94,7 +94,7 @@ export function MobileNavigation(props: MobileNavigationProps) {
 										fullDate.toDateString() === selectedDate.toDateString() && styles["active-day"],
 									)}
 									onClick={() => {
-										onSelectDate(fullDate);
+										onSelectDateAction(fullDate);
 									}}
 								>
 									<Text>{label}</Text>

@@ -13,7 +13,7 @@ import { createGeneralTodo, FormState } from "../../actions/generalTodos";
 
 type AddTaskModalProps = {
 	open: boolean;
-	setOpen: (open: boolean) => void;
+	onOpenAction: (open: boolean) => void;
 	defaultValue?: string;
 	renderTrigger?: boolean;
 };
@@ -23,19 +23,19 @@ const initialState: FormState = {
 };
 
 export function AddTaskModal(props: AddTaskModalProps) {
-	const { open, setOpen, defaultValue, renderTrigger = true } = props;
+	const { open, onOpenAction, defaultValue, renderTrigger = true } = props;
 	const [state, formAction] = useActionState(createGeneralTodo, initialState);
 	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
 		if (state.success) {
-			setOpen(false);
+			onOpenAction(false);
 			formRef.current?.reset();
 		}
-	}, [state.success, setOpen]);
+	}, [state.success, onOpenAction]);
 
 	return (
-		<Dialog.Root open={open} onOpenChange={setOpen}>
+		<Dialog.Root open={open} onOpenChange={onOpenAction}>
 			{renderTrigger && (
 				<Dialog.Trigger asChild>
 					<button className={styles["add-task-button"]}>
