@@ -9,6 +9,7 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { useDraggableTodos } from "@hooks/useDraggableTodos";
 import { useGeneralTodos } from "@hooks/useGeneralTodos";
 import { useTodoToggle } from "@hooks/useTodoToggle";
+import type { GeneralTodo } from "@prisma/client";
 import { useEffect, useState } from "react";
 import styles from "./RememberContent.module.scss";
 
@@ -20,6 +21,7 @@ export function RememberContent(props: RememberContentProps) {
 	const {} = props;
 
 	const [modalOpen, setModalOpen] = useState(false);
+	const [editingTodo, setEditingTodo] = useState<GeneralTodo | null>(null);
 	const { todos, loading, deleteTodo, refresh } = useGeneralTodos();
 	const { checkedTodos, handleTodoToggle } = useTodoToggle(deleteTodo);
 	const { localTodos, activeTodo, sensors, handleDragStart, handleDragEnd, handleDragCancel } = useDraggableTodos(
@@ -27,8 +29,16 @@ export function RememberContent(props: RememberContentProps) {
 	);
 
 	useEffect(() => {
-		if (!modalOpen) refresh();
+		if (!modalOpen) {
+			refresh();
+			setEditingTodo(null);
+		}
 	}, [modalOpen, refresh]);
+
+	const handleEditTodo = (todo: GeneralTodo) => {
+		setEditingTodo(todo);
+		setModalOpen(true);
+	};
 
 	return (
 		<div className={styles["remember-content"]}>
@@ -56,6 +66,7 @@ export function RememberContent(props: RememberContentProps) {
 										taskName={todo.text}
 										checked={checkedTodos.has(todo.id)}
 										onToggleAction={checked => handleTodoToggle(todo.id, checked)}
+										onEdit={() => handleEditTodo(todo)}
 									/>
 								))}
 							</SortableContext>
@@ -71,7 +82,16 @@ export function RememberContent(props: RememberContentProps) {
 						</DndContext>
 					)}
 			</div>
-			<AddTaskModal open={modalOpen} onOpenAction={setModalOpen} />
+			<AddTaskModal
+				open={modalOpen}
+				onOpenAction={setModalOpen}
+				editMode={editingTodo
+					? {
+						todoId: editingTodo.id,
+						initialText: editingTodo.text,
+					}
+					: undefined}
+			/>
 		</div>
 	);
 }

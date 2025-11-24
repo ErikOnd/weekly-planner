@@ -11,6 +11,7 @@ import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { useDraggableTodos } from "@hooks/useDraggableTodos";
 import { useGeneralTodos } from "@hooks/useGeneralTodos";
 import { useTodoToggle } from "@hooks/useTodoToggle";
+import type { GeneralTodo } from "@prisma/client";
 import { isCurrentWeek } from "@utils/usCurrentWeek";
 import { useEffect, useState } from "react";
 import styles from "./Sidebar.module.scss";
@@ -23,6 +24,7 @@ type SidebarProps = {
 
 export function Sidebar({ baseDate, setBaseDateAction, rangeLabel }: SidebarProps) {
 	const [isAddOpen, setIsAddOpen] = useState(false);
+	const [editingTodo, setEditingTodo] = useState<GeneralTodo | null>(null);
 	const { todos, loading, deleteTodo, refresh } = useGeneralTodos();
 	const { checkedTodos, handleTodoToggle } = useTodoToggle(deleteTodo);
 	const { localTodos, activeTodo, sensors, handleDragStart, handleDragEnd, handleDragCancel } = useDraggableTodos(
@@ -30,8 +32,16 @@ export function Sidebar({ baseDate, setBaseDateAction, rangeLabel }: SidebarProp
 	);
 
 	useEffect(() => {
-		if (!isAddOpen) refresh();
+		if (!isAddOpen) {
+			refresh();
+			setEditingTodo(null);
+		}
 	}, [isAddOpen, refresh]);
+
+	const handleEditTodo = (todo: GeneralTodo) => {
+		setEditingTodo(todo);
+		setIsAddOpen(true);
+	};
 
 	return (
 		<div className={styles["sidebar"]}>
@@ -84,6 +94,7 @@ export function Sidebar({ baseDate, setBaseDateAction, rangeLabel }: SidebarProp
 												text={todo.text}
 												checked={checkedTodos.has(todo.id)}
 												onToggle={checked => handleTodoToggle(todo.id, checked)}
+												onEdit={() => handleEditTodo(todo)}
 											/>
 										))}
 									</SortableContext>
@@ -101,7 +112,17 @@ export function Sidebar({ baseDate, setBaseDateAction, rangeLabel }: SidebarProp
 					</div>
 				</div>
 			</div>
-			<AddTaskModal open={isAddOpen} onOpenAction={setIsAddOpen} renderTrigger={false} />
+			<AddTaskModal
+				open={isAddOpen}
+				onOpenAction={setIsAddOpen}
+				renderTrigger={false}
+				editMode={editingTodo
+					? {
+						todoId: editingTodo.id,
+						initialText: editingTodo.text,
+					}
+					: undefined}
+			/>
 		</div>
 	);
 }

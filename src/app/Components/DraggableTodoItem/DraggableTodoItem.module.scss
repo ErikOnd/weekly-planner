@@ -13,4 +13,33 @@
 	&.dragging {
 		opacity: 0;
 	}
+
+	.todo-content {
+		display: flex;
+		padding-block: var(--space-sm);
+		border-radius: variables.$radius-md;
+		background: var(--color-surface);
+		box-shadow: 0 .1rem .1rem 0 var(--color-shadow-sm);
+		justify-content: space-between;
+		align-items: center;
+		gap: var(--space-sm);
+
+		.edit-button {
+			height: fit-content;
+			background-color: var(--color-surface);
+			color: var(--color-text-light);
+			cursor: pointer;
+			border: none;
+
+			&:hover, &:focus-visible {
+				color: var(--color-primary);
+			}
+
+			&:focus-visible {
+				outline: .1rem solid var(--color-primary);
+				outline-offset: .2rem;
+				border-radius: variables.$radius-sm;
+			}
+		}
+	}
 }

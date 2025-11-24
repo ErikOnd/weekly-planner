@@ -2,14 +2,13 @@
 @use "../../styles/mixins" as mixins;
 
 .message-error {
+	width: fit-content;
 	color: var(--color-error-dark);
 	background-color: var(--color-error-background);
 	padding: var(--space-md);
 	border-radius: variables.$radius-lg;
 	margin-top: var(--space-md);
-	border: 0.09rem solid var(--color-error-border);
-	font-size: 0.9rem;
-	line-height: 1.5;
+	border: 0.1rem solid var(--color-error-border);
 	transition: all variables.$transition-base;
 }
 
@@ -19,8 +18,6 @@
 	padding: var(--space-md);
 	border-radius: variables.$radius-lg;
 	margin-top: var(--space-md);
-	border: 0.09rem solid var(--color-info-border);
-	font-size: 0.9rem;
-	line-height: 1.5;
+	border: 0.1rem solid var(--color-info-border);
 	transition: all variables.$transition-base;
 }

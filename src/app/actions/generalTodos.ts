@@ -10,6 +10,16 @@ export type FormState = {
 	success?: boolean;
 };
 
+export async function saveGeneralTodo(_prevState: FormState, formData: FormData): Promise<FormState> {
+	const todoId = formData.get("todoId") as string;
+
+	if (todoId && todoId.trim().length > 0) {
+		return updateGeneralTodo(_prevState, formData);
+	} else {
+		return createGeneralTodo(_prevState, formData);
+	}
+}
+
 export async function createGeneralTodo(_prevState: FormState, formData: FormData): Promise<FormState> {
 	try {
 		const supabase = await createClient();
@@ -117,6 +127,71 @@ export async function deleteGeneralTodo(todoId: string): Promise<FormState> {
 		console.error("Error deleting general todo:", error);
 		return {
 			error: "Failed to delete task",
+			success: false,
+		};
+	}
+}
+
+export async function updateGeneralTodo(_prevState: FormState, formData: FormData): Promise<FormState> {
+	try {
+		const supabase = await createClient();
+		const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+		if (authError || !user) {
+			return {
+				error: "You must be logged in to update a task",
+				success: false,
+			};
+		}
+
+		const todoId = formData.get("todoId") as string;
+		const text = formData.get("text") as string;
+
+		if (!todoId) {
+			return {
+				error: "Task ID is required",
+				success: false,
+			};
+		}
+
+		if (!text || text.trim().length === 0) {
+			return {
+				error: "Task text is required",
+				success: false,
+			};
+		}
+
+		const todo = await prisma.generalTodo.findFirst({
+			where: {
+				id: todoId,
+				userId: user.id,
+			},
+		});
+
+		if (!todo) {
+			return {
+				error: "Task not found",
+				success: false,
+			};
+		}
+
+		await prisma.generalTodo.update({
+			where: { id: todoId },
+			data: {
+				text: text.trim(),
+			},
+		});
+
+		revalidatePath("/");
+
+		return {
+			message: "Task updated successfully",
+			success: true,
+		};
+	} catch (error) {
+		console.error("Error updating general todo:", error);
+		return {
+			error: "Failed to update task",
 			success: false,
 		};
 	}

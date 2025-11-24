@@ -3,6 +3,7 @@ import styles from "./InputField.module.scss";
 
 type InputFieldProps = {
 	value?: string;
+	defaultValue?: string;
 	onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 	id?: string;
 	name?: string;
@@ -15,6 +16,7 @@ type InputFieldProps = {
 
 export function InputField({
 	value,
+	defaultValue,
 	onChange,
 	id,
 	name,
@@ -28,6 +30,7 @@ export function InputField({
 			className={styles["input-field"]}
 			type={type}
 			value={value}
+			defaultValue={defaultValue}
 			onChange={onChange}
 			placeholder={placeholder}
 			name={name}

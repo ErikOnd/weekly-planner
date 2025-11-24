@@ -1,6 +1,7 @@
 "use client";
 
 import Checkbox from "@atoms/Checkbox/Checkbox";
+import { Icon } from "@atoms/Icons/Icon";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import clsx from "clsx";
@@ -11,9 +12,10 @@ type DraggableTodoItemProps = {
 	text: string;
 	checked: boolean;
 	onToggle: (checked: boolean) => void;
+	onEdit?: () => void;
 };
 
-export function DraggableTodoItem({ id, text, checked, onToggle }: DraggableTodoItemProps) {
+export function DraggableTodoItem({ id, text, checked, onToggle, onEdit }: DraggableTodoItemProps) {
 	const {
 		attributes,
 		listeners,
@@ -38,7 +40,19 @@ export function DraggableTodoItem({ id, text, checked, onToggle }: DraggableTodo
 				[styles["dragging"]]: isDragging,
 			})}
 		>
-			<Checkbox label={text} checked={checked} onChange={onToggle} />
+			<div className={styles["todo-content"]}>
+				<Checkbox label={text} checked={checked} onChange={onToggle} />
+				{onEdit && (
+					<button
+						className={styles["edit-button"]}
+						onClick={onEdit}
+						aria-label="Edit task"
+						type="button"
+					>
+						<Icon name="pencil" />
+					</button>
+				)}
+			</div>
 		</div>
 	);
 }

@@ -9,13 +9,17 @@ import { Message } from "@atoms/Message/Message";
 import { Text } from "@atoms/Text/Text";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useActionState, useEffect, useRef } from "react";
-import { createGeneralTodo, FormState } from "../../actions/generalTodos";
+import { FormState, saveGeneralTodo } from "../../actions/generalTodos";
 
 type AddTaskModalProps = {
 	open: boolean;
 	onOpenAction: (open: boolean) => void;
 	defaultValue?: string;
 	renderTrigger?: boolean;
+	editMode?: {
+		todoId: string;
+		initialText: string;
+	};
 };
 
 const initialState: FormState = {
@@ -23,16 +27,19 @@ const initialState: FormState = {
 };
 
 export function AddTaskModal(props: AddTaskModalProps) {
-	const { open, onOpenAction, defaultValue, renderTrigger = true } = props;
-	const [state, formAction] = useActionState(createGeneralTodo, initialState);
+	const { open, onOpenAction, defaultValue, renderTrigger = true, editMode } = props;
+	const isEditMode = !!editMode;
+	const [state, formAction, isPending] = useActionState(saveGeneralTodo, initialState);
 	const formRef = useRef<HTMLFormElement>(null);
 
 	useEffect(() => {
-		if (state.success) {
+		if (state.success && !isPending) {
 			onOpenAction(false);
 			formRef.current?.reset();
 		}
-	}, [state.success, onOpenAction]);
+	}, [state.success, isPending, onOpenAction]);
+
+	const formKey = isEditMode ? editMode.todoId : "create";
 
 	return (
 		<Dialog.Root open={open} onOpenChange={onOpenAction}>
@@ -47,16 +54,21 @@ export function AddTaskModal(props: AddTaskModalProps) {
 				<Dialog.Overlay className={styles["overlay"]} />
 				<Dialog.Content className={styles["content"]}>
 					<Dialog.Title className={styles["title"]}>
-						<Text>Add New Task</Text>
+						<Text>{isEditMode ? "Edit Task" : "Add New Task"}</Text>
 					</Dialog.Title>
-					<form action={formAction} ref={formRef}>
+					<form action={formAction} ref={formRef} key={formKey}>
+						{isEditMode && <input type="hidden" name="todoId" value={editMode.todoId} />}
 						<fieldset className={styles["fieldset"]}>
-							<InputField name="text" value={defaultValue} required />
+							<InputField
+								name="text"
+								defaultValue={isEditMode ? editMode.initialText : defaultValue}
+								required
+							/>
 						</fieldset>
 						{state.error && <Message variant="error">{state.error}</Message>}
 						<div className={styles["button-group"]}>
-							<Button type="submit" variant="primary" fontWeight={700}>
-								Save Task
+							<Button type="submit" variant="primary" fontWeight={700} disabled={isPending}>
+								{isPending ? "Saving..." : "Save Task"}
 							</Button>
 
 							<Dialog.Close asChild>
