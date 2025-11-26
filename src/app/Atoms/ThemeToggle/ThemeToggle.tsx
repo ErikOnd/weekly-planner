@@ -6,11 +6,6 @@ import { Icon } from "@atoms/Icons/Icon";
 import clsx from "clsx";
 import styles from "./ThemeToggle.module.scss";
 
-/**
- * ThemeToggle Component
- * Accessible toggle button for switching between light and dark themes
- * Includes smooth animations and proper ARIA attributes
- */
 export default function ThemeToggle() {
 	const { theme, toggleTheme, mounted } = useTheme();
 

@@ -122,3 +122,4 @@ Required in `.env.local`:
 - don't use new colours like #dc2626, first look in my _global.scss and look if a color that might fit is there. If not, go to the _variables.scss and add a new color variable there than add it in my _global.scss and that use it in the component
 - never ever use inline styling
 - CSS class names must always use kebab-case, for example: this-is-a-css-class-name
+- don't create unnecessary comments

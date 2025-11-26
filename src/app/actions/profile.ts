@@ -36,12 +36,10 @@ export async function createNewUser(displayName?: string) {
 			return { success: false, error: "Not authenticated" };
 		}
 
-		// Only create user if email is verified
 		if (!user.email_confirmed_at) {
 			return { success: false, error: "Email not verified" };
 		}
 
-		// Get displayName from parameter or user metadata
 		const userDisplayName = displayName || (user.user_metadata?.displayName as string) || "";
 
 		await prisma.profile.create({

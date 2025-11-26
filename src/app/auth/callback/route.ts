@@ -6,19 +6,17 @@ export async function GET(request: Request) {
 	const { searchParams, origin } = new URL(request.url);
 	const code = searchParams.get("code");
 	const next = searchParams.get("next") ?? "/";
-	const type = searchParams.get("type"); // Check if it's a password recovery
+	const type = searchParams.get("type");
 
 	if (code) {
 		const supabase = await createClient();
 		const { error } = await supabase.auth.exchangeCodeForSession(code);
 
 		if (!error) {
-			// If it's a password recovery, redirect to reset password page
 			if (type === "recovery") {
 				return NextResponse.redirect(`${origin}/auth/reset-password`);
 			}
 
-			// Otherwise it's email verification - create profile
 			await createNewUser();
 
 			const forwardedHost = request.headers.get("x-forwarded-host");

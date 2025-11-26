@@ -15,9 +15,6 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_STORAGE_KEY = "weekly-planner-theme";
 
-/**
- * Get initial theme from localStorage or system preference
- */
 function getInitialTheme(): Theme {
 	if (typeof window === "undefined") return "light";
 
@@ -33,11 +30,6 @@ function getInitialTheme(): Theme {
 	return "light";
 }
 
-/**
- * ThemeProvider component
- * Manages theme state and persists preference to localStorage
- * Applies theme by setting data-theme attribute on html element
- */
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	const [theme, setThemeState] = useState<Theme>("light");
 	const [mounted, setMounted] = useState(false);
@@ -93,9 +85,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 	);
 }
 
-/**
- * Hook to access theme context
- */
 export function useTheme() {
 	const context = useContext(ThemeContext);
 	if (context === undefined) {

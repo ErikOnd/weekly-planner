@@ -36,7 +36,6 @@
 :root {
 	--font-inter: 'Inter', sans-serif;
 
-	/* Text Colors */
 	--color-text: #{variables.$color-text};
 	--color-text-muted: #{variables.$color-text-muted};
 	--color-text-light: #{variables.$color-text-light};
@@ -44,17 +43,14 @@
 	--color-text-settings: #{variables.$color-text-settings};
 	--color-text-secondary: #{variables.$color-text-secondary};
 
-	/* Background Colors */
 	--color-background: #{variables.$color-background};
 	--color-surface: #{variables.$color-surface};
 	--color-surface-elevated: #{variables.$color-surface-elevated};
 
-	/* Border Colors */
 	--color-border: #{variables.$color-border};
 	--color-border-light: #{variables.$color-border-light};
 	--color-border-focus: #{variables.$color-border-focus};
 
-	/* Primary Colors */
 	--color-primary: #{variables.$color-primary};
 	--color-primary-dark: #{variables.$color-primary-dark};
 	--color-primary-darker: #{variables.$color-primary-darker};
@@ -62,32 +58,26 @@
 	--color-primary-lighter: #{variables.$color-primary-lighter};
 	--color-primary-subtle: #{variables.$color-primary-subtle};
 
-	/* Neutral Grays */
 	--color-gray-light: #{variables.$color-gray-light};
 	--color-gray-medium: #{variables.$color-gray-medium};
 	--color-day-label: #{variables.$color-day-label};
 
-	/* Status Colors - Error */
 	--color-error: #{variables.$color-error};
 	--color-error-dark: #{variables.$color-error-dark};
 	--color-error-background: #{variables.$color-error-background};
 	--color-error-border: #{variables.$color-error-border};
 
-	/* Status Colors - Info */
 	--color-info: #{variables.$color-info};
 	--color-info-background: #{variables.$color-info-background};
 	--color-info-border: #{variables.$color-info-border};
 
-	/* Status Colors - Success */
 	--color-success: #{variables.$color-success};
 	--color-success-background: #{variables.$color-success-background};
 	--color-success-border: #{variables.$color-success-border};
 
-	/* Overlays */
 	--color-overlay: #{variables.$color-overlay};
 	--color-overlay-light: #{variables.$color-overlay-light};
 
-	/* Shadows */
 	--shadow-xs: #{variables.$shadow-color-sm};
 	--shadow-sm: #{variables.$shadow-color-sm};
 	--shadow-md: #{variables.$shadow-color-md};
@@ -96,7 +86,6 @@
 	--shadow-primary: #{variables.$shadow-primary};
 	--shadow-primary-sm: #{variables.$shadow-primary-sm};
 
-	/* Spacings */
 	--space-xs: #{mixins.clamp-builder(0.4, 0.8)};
 	--space-sm: #{mixins.clamp-builder(0.8, 1.2)};
 	--space-md: #{mixins.clamp-builder(1.2, 1.6)};
@@ -107,15 +96,7 @@
 	--content-spacing: #{mixins.clamp-builder(1.6, 4.8)};
 }
 
-/* ============================================================================
-   DARK THEME
-   ============================================================================
-   Applied when [data-theme="dark"] attribute is set on html element
-   All colors meet WCAG AA accessibility standards
-*/
-
 [data-theme="dark"] {
-	/* Text Colors - High contrast for readability */
 	--color-text: #{variables.$color-text-dark};
 	--color-text-muted: #{variables.$color-text-muted-dark};
 	--color-text-light: #{variables.$color-text-light-dark};
@@ -123,17 +104,14 @@
 	--color-text-settings: #{variables.$color-text-settings-dark};
 	--color-text-secondary: #{variables.$color-text-secondary-dark};
 
-	/* Background Colors - Layered depth system */
 	--color-background: #{variables.$color-background-dark};
 	--color-surface: #{variables.$color-surface-dark};
 	--color-surface-elevated: #{variables.$color-surface-elevated-dark};
 
-	/* Border Colors - Visible but subtle */
 	--color-border: #{variables.$color-border-dark};
 	--color-border-light: #{variables.$color-border-light-dark};
 	--color-border-focus: #{variables.$color-border-focus-dark};
 
-	/* Primary Colors - Vibrant purple for dark mode */
 	--color-primary: #{variables.$color-primary-dark-theme};
 	--color-primary-dark: #{variables.$color-primary-dark-theme-dark};
 	--color-primary-darker: #{variables.$color-primary-dark-theme-darker};
@@ -141,32 +119,26 @@
 	--color-primary-lighter: #{variables.$color-primary-dark-theme-lighter};
 	--color-primary-subtle: #{variables.$color-primary-dark-theme-subtle};
 
-	/* Neutral Grays */
 	--color-gray-light: #{variables.$color-gray-light-dark};
 	--color-gray-medium: #{variables.$color-gray-medium-dark};
 	--color-day-label: #{variables.$color-day-label-dark};
 
-	/* Status Colors - Error */
 	--color-error: #{variables.$color-error-dark-theme};
 	--color-error-dark: #{variables.$color-error-dark-theme-dark};
 	--color-error-background: #{variables.$color-error-background-dark};
 	--color-error-border: #{variables.$color-error-border-dark};
 
-	/* Status Colors - Info */
 	--color-info: #{variables.$color-info-dark-theme};
 	--color-info-background: #{variables.$color-info-background-dark};
 	--color-info-border: #{variables.$color-info-border-dark};
 
-	/* Status Colors - Success */
 	--color-success: #{variables.$color-success-dark-theme};
 	--color-success-background: #{variables.$color-success-background-dark};
 	--color-success-border: #{variables.$color-success-border-dark};
 
-	/* Overlays - Darker for dark mode */
 	--color-overlay: #{variables.$color-overlay-dark};
 	--color-overlay-light: #{variables.$color-overlay-light-dark};
 
-	/* Shadows - Stronger shadows for depth on dark backgrounds */
 	--shadow-xs: #{variables.$shadow-color-sm-dark};
 	--shadow-sm: #{variables.$shadow-color-sm-dark};
 	--shadow-md: #{variables.$shadow-color-md-dark};
@@ -175,7 +147,6 @@
 	--shadow-primary: #{variables.$shadow-primary-dark};
 	--shadow-primary-sm: #{variables.$shadow-primary-sm-dark};
 
-	/* Enhance shadows on dark backgrounds for better depth perception */
 	color-scheme: dark;
 }
 
@@ -221,18 +192,15 @@ input, button, textarea, select {
 	font: inherit;
 }
 
-/* Better focus styles for accessibility */
 :focus-visible {
 	outline: 0.13rem solid var(--color-primary);
 	outline-offset: 0.13rem;
 }
 
-/* Remove default focus outline on mouse click, keep for keyboard */
 *:focus:not(:focus-visible) {
 	outline: none;
 }
 
-/* Smooth transitions for theme changes */
 * {
 	transition-property: background-color, border-color, color;
 	transition-duration: variables.$transition-base;
