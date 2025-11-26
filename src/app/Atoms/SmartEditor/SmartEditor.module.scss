@@ -1,46 +1,148 @@
 @use "../../styles/typography" as typography;
 @use "../../styles/variables" as variables;
 
-
 .smart-editor {
 	padding-block: var(--space-md);
 	@include typography.text-base;
 
-	:global(.bn-block-content)[data-content-type="checkListItem"]
-	> input[type="checkbox"] {
-		appearance: none;
-		width: 1.5rem;
-		height: 1.5rem;
-		border: 0.1rem solid black;
-		border-radius: variables.$radius-md;
-		margin-right: 0.5rem;
-		cursor: pointer;
-		position: relative;
-		flex-shrink: 0;
-
-		&:hover {
-			background-color: var(--color-primary-light);
+	// Override Blocknote's default colors with theme colors
+	:global {
+		// Background colors
+		.bn-container,
+		.bn-editor {
+			background-color: var(--color-surface);
+			color: var(--color-text);
 		}
 
-		&:focus-visible {
-			outline: 0.1rem solid var(--color-primary);
-			outline-offset: 0.1rem;
+		// Text content
+		.bn-block-content {
+			color: var(--color-text);
 		}
 
-		&:checked {
-			background-color: var(--color-primary);
+		// Placeholder text
+		.bn-block-content[data-content-type="paragraph"]::before {
+			color: var(--color-text-placeholder);
 		}
 
-		&:checked::after {
-			content: "";
-			position: absolute;
-			left: 0.5rem;
-			top: 0.3rem;
-			width: 0.3rem;
-			height: 0.6rem;
-			border: solid var(--color-surface);
-			border-width: 0 0.1rem 0.1rem 0;
-			transform: rotate(45deg);
+		// Headings
+		h1.bn-block-content,
+		h2.bn-block-content,
+		h3.bn-block-content {
+			color: var(--color-text);
+		}
+
+		// Links
+		.bn-inline-content a {
+			color: var(--color-primary);
+			text-decoration: underline;
+
+			&:hover {
+				color: var(--color-primary-dark);
+			}
+		}
+
+		// Lists
+		ul.bn-block-group,
+		ol.bn-block-group {
+			color: var(--color-text);
+		}
+
+		// Slash menu
+		.bn-suggestion-menu {
+			background-color: var(--color-surface-elevated);
+			border: 0.1rem solid var(--color-border);
+			border-radius: variables.$radius-md;
+			box-shadow: var(--shadow-lg);
+		}
+
+		.bn-suggestion-menu-item {
+			color: var(--color-text);
+
+			&:hover,
+			&[data-hovered="true"] {
+				background-color: var(--color-primary-subtle);
+			}
+
+			&[data-selected="true"] {
+				background-color: var(--color-primary-light);
+				color: var(--color-text);
+			}
+		}
+
+		// Checkboxes
+		.bn-block-content[data-content-type="checkListItem"] > input[type="checkbox"] {
+			appearance: none;
+			width: 1.5rem;
+			height: 1.5rem;
+			border: 0.1rem solid var(--color-border);
+			border-radius: variables.$radius-md;
+			margin-right: 0.5rem;
+			cursor: pointer;
+			position: relative;
+			flex-shrink: 0;
+			background-color: var(--color-surface);
+			transition: all variables.$transition-fast;
+
+			&:hover {
+				background-color: var(--color-primary-subtle);
+				border-color: var(--color-primary);
+			}
+
+			&:focus-visible {
+				outline: 0.1rem solid var(--color-primary);
+				outline-offset: 0.1rem;
+			}
+
+			&:checked {
+				background-color: var(--color-primary);
+				border-color: var(--color-primary);
+			}
+
+			&:checked::after {
+				content: "";
+				position: absolute;
+				left: 0.45rem;
+				top: 0.15rem;
+				width: 0.3rem;
+				height: 0.7rem;
+				border: solid var(--color-surface);
+				border-width: 0 0.15rem 0.15rem 0;
+				transform: rotate(45deg);
+			}
+		}
+
+		// Selection
+		.bn-block-content ::selection {
+			background-color: var(--color-primary-subtle);
+		}
+
+		// Code blocks (if you add them later)
+		.bn-block-content code {
+			background-color: var(--color-surface-elevated);
+			color: var(--color-text);
+			border: 0.1rem solid var(--color-border);
+			border-radius: variables.$radius-sm;
+		}
+
+		// Formatting toolbar (if visible)
+		.bn-formatting-toolbar {
+			background-color: var(--color-surface-elevated);
+			border: 0.1rem solid var(--color-border);
+			border-radius: variables.$radius-md;
+			box-shadow: var(--shadow-md);
+		}
+
+		.bn-formatting-toolbar-button {
+			color: var(--color-text);
+
+			&:hover {
+				background-color: var(--color-primary-subtle);
+			}
+
+			&[data-active="true"] {
+				background-color: var(--color-primary);
+				color: var(--color-surface);
+			}
 		}
 	}
 }
