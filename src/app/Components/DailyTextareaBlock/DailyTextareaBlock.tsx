@@ -18,6 +18,7 @@ import { getDailyNote, saveDailyNote } from "../../actions/dailyNotes";
 type NotesCache = {
 	setCache: (dateString: string, content: Block[] | undefined) => void;
 	getCache: (dateString: string) => Block[] | undefined;
+	hasCache: (dateString: string) => boolean;
 };
 
 type DailyTextareaProps = {
@@ -56,13 +57,15 @@ function DailyTextareaBlockComponent(props: DailyTextareaProps) {
 		currentDateRef.current = dateString;
 
 		const loadNote = async () => {
-			const cached = notesCache.getCache(dateString);
-			if (cached !== undefined) {
+			// Check if we have this date in cache (even if the value is undefined)
+			if (notesCache.hasCache(dateString)) {
+				const cached = notesCache.getCache(dateString);
 				setContentState({ dateKey: dateString, content: cached });
 				setIsLoading(false);
 				return;
 			}
 
+			// Not in cache, fetch from server
 			setIsLoading(true);
 			try {
 				const note = await getDailyNote(dateString);

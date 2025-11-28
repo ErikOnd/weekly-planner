@@ -18,8 +18,13 @@ export function useDailyNotesCache() {
 		return cacheRef.current[dateString];
 	}, []);
 
+	const hasCache = useCallback((dateString: string): boolean => {
+		return dateString in cacheRef.current;
+	}, []);
+
 	return {
 		setCache,
 		getCache,
+		hasCache,
 	};
 }

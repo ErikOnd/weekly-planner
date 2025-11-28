@@ -2,6 +2,7 @@
 
 import styles from "@components/Homepage/HomePage.module.scss";
 
+import type { Block } from "@blocknote/core";
 import { DesktopContent } from "@components/DesktopContent/DesktopContent";
 import { DesktopNavigation } from "@components/DesktopNavigation/DesktopNavigation";
 import { MobileNavigation } from "@components/MobileNavigation/MobileNavigation";
@@ -13,7 +14,8 @@ import { useDailyNotesCache } from "@hooks/useDailyNotesCache";
 import { useGeneralTodos } from "@hooks/useGeneralTodos";
 import { useMediaQuery } from "@hooks/useMediaQuery";
 import { getCurrentWeek } from "@utils/getCurrentWeek";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getWeeklyNotes } from "../../actions/dailyNotes";
 
 export default function HomePage() {
 	const isMobile = useMediaQuery("(max-width: 1023px)");
@@ -24,8 +26,41 @@ export default function HomePage() {
 
 	const todosState = useGeneralTodos();
 	const notesCache = useDailyNotesCache();
+	const [weekLoaded, setWeekLoaded] = useState(false);
+
+	useEffect(() => {
+		const { days } = getCurrentWeek(baseDate);
+		const startDate = days[0].fullDate;
+		const endDate = days[6].fullDate;
+
+		setWeekLoaded(false);
+
+		const loadWeeklyNotes = async () => {
+			const notes = await getWeeklyNotes(startDate, endDate);
+
+			notes.forEach((note) => {
+				const dateString = note.date.toISOString().split("T")[0];
+				notesCache.setCache(dateString, note.content as Block[] | undefined);
+			});
+
+			// Also pre-populate empty dates in the week
+			days.forEach((day) => {
+				const dateString = day.fullDate.toISOString().split("T")[0];
+				if (!notesCache.hasCache(dateString)) {
+					notesCache.setCache(dateString, undefined);
+				}
+			});
+
+			setWeekLoaded(true);
+		};
+
+		loadWeeklyNotes();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [baseDate]);
 
 	const renderMobileContent = () => {
+		if (!weekLoaded) return null;
+
 		switch (selectedContent) {
 			case "weekly":
 				return <WeeklyContent selectedDate={selectedDate} notesCache={notesCache} />;
@@ -64,7 +99,7 @@ export default function HomePage() {
 								rangeLabel={rangeLabel}
 								todosState={todosState}
 							/>
-							<DesktopContent baseDate={baseDate} notesCache={notesCache} />
+							{weekLoaded && <DesktopContent baseDate={baseDate} notesCache={notesCache} />}
 						</div>
 					</div>
 				)}

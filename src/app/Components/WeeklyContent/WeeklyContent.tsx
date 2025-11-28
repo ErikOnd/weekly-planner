@@ -8,6 +8,7 @@ import { DailyTextareaBlock } from "@components/DailyTextareaBlock/DailyTextarea
 type NotesCache = {
 	setCache: (dateString: string, content: Block[] | undefined) => void;
 	getCache: (dateString: string) => Block[] | undefined;
+	hasCache: (dateString: string) => boolean;
 };
 
 type WeeklyContentProps = {
