@@ -9,6 +9,8 @@ import { ProfileContent } from "@components/ProfileContent/ProfileContent";
 import { RememberContent } from "@components/RememberContent/RememberContent";
 import { Sidebar } from "@components/SideBar/Sidebar";
 import { WeeklyContent } from "@components/WeeklyContent/WeeklyContent";
+import { useDailyNotesCache } from "@hooks/useDailyNotesCache";
+import { useGeneralTodos } from "@hooks/useGeneralTodos";
 import { useMediaQuery } from "@hooks/useMediaQuery";
 import { getCurrentWeek } from "@utils/getCurrentWeek";
 import { useState } from "react";
@@ -20,12 +22,15 @@ export default function HomePage() {
 	const [baseDate, setBaseDate] = useState<Date>(new Date());
 	const { rangeLabel } = getCurrentWeek(baseDate);
 
+	const todosState = useGeneralTodos();
+	const notesCache = useDailyNotesCache();
+
 	const renderMobileContent = () => {
 		switch (selectedContent) {
 			case "weekly":
-				return <WeeklyContent selectedDate={selectedDate} />;
+				return <WeeklyContent selectedDate={selectedDate} notesCache={notesCache} />;
 			case "remember":
-				return <RememberContent />;
+				return <RememberContent todosState={todosState} />;
 			case "profile":
 				return <ProfileContent />;
 			default:
@@ -53,8 +58,13 @@ export default function HomePage() {
 					<div className={styles["desktop-view"]}>
 						<DesktopNavigation rangeLabel={rangeLabel} />
 						<div className={styles["sidebar-content-section"]}>
-							<Sidebar baseDate={baseDate} setBaseDateAction={setBaseDate} rangeLabel={rangeLabel} />
-							<DesktopContent baseDate={baseDate} />
+							<Sidebar
+								baseDate={baseDate}
+								setBaseDateAction={setBaseDate}
+								rangeLabel={rangeLabel}
+								todosState={todosState}
+							/>
+							<DesktopContent baseDate={baseDate} notesCache={notesCache} />
 						</div>
 					</div>
 				)}

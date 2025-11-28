@@ -2,9 +2,9 @@
 
 import styles from "./DailyTextareaBlock.module.scss";
 
-import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, useCallback, memo } from "react";
 import type { Block } from "@blocknote/core";
+import dynamic from "next/dynamic";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 const SmartEditor = dynamic(() => import("@atoms/SmartEditor/SmartEditor"), {
 	ssr: false,
@@ -13,15 +13,22 @@ const SmartEditor = dynamic(() => import("@atoms/SmartEditor/SmartEditor"), {
 import { Text } from "@atoms/Text/Text";
 import { formatToDayLabel } from "@utils/formatToDayLabel";
 import clsx from "clsx";
-import {getDailyNote, saveDailyNote} from "../../actions/dailyNotes";
+import { saveDailyNote } from "../../actions/dailyNotes";
+
+type NotesCache = {
+	getNote: (dateString: string) => Promise<Block[] | undefined>;
+	getCachedNote: (dateString: string) => { content: Block[] | undefined; loading: boolean } | undefined;
+	updateNote: (dateString: string, content: Block[]) => void;
+};
 
 type DailyTextareaProps = {
 	textareaDate: Date;
 	autoFocus?: boolean;
+	notesCache: NotesCache;
 };
 
 function DailyTextareaBlockComponent(props: DailyTextareaProps) {
-	const { textareaDate } = props;
+	const { textareaDate, notesCache } = props;
 	const { weekday, date } = formatToDayLabel(textareaDate);
 	const isToday = textareaDate.toDateString() === new Date().toDateString();
 	const textareaBlock = useRef<HTMLDivElement | null>(null);
@@ -43,31 +50,38 @@ function DailyTextareaBlockComponent(props: DailyTextareaProps) {
 
 	useEffect(() => {
 		const loadNote = async () => {
-			setIsLoading(true);
 			const dateString = textareaDate.toISOString().split("T")[0];
-			const note = await getDailyNote(dateString);
+			const cached = notesCache.getCachedNote(dateString);
 
-			if (note && note.content) {
-				setInitialContent(note.content as Block[]);
+			if (cached !== undefined) {
+				setInitialContent(cached.content);
+				setIsLoading(cached.loading);
+				return;
 			}
+
+			setIsLoading(true);
+			const content = await notesCache.getNote(dateString);
+			setInitialContent(content);
 			setIsLoading(false);
 		};
 
 		loadNote();
-	}, [textareaDate]);
+	}, [textareaDate, notesCache]);
 
 	const handleChange = useCallback(
 		(content: Block[]) => {
+			const dateString = textareaDate.toISOString().split("T")[0];
+			notesCache.updateNote(dateString, content);
+
 			if (saveTimeoutRef.current) {
 				clearTimeout(saveTimeoutRef.current);
 			}
 
 			saveTimeoutRef.current = setTimeout(async () => {
-				const dateString = textareaDate.toISOString().split("T")[0];
 				await saveDailyNote(dateString, content);
 			}, 1000);
 		},
-		[textareaDate],
+		[textareaDate, notesCache],
 	);
 
 	useEffect(() => {

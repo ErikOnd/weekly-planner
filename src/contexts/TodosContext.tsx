@@ -1,8 +1,8 @@
 "use client";
 
 import type { GeneralTodo } from "@prisma/client";
-import { createContext, useCallback, useEffect, useState, ReactNode } from "react";
-import { getGeneralTodos, deleteGeneralTodo as deleteGeneralTodoAction } from "../app/actions/generalTodos";
+import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
+import { deleteGeneralTodo as deleteGeneralTodoAction, getGeneralTodos } from "../app/actions/generalTodos";
 
 type TodosContextType = {
 	todos: GeneralTodo[];

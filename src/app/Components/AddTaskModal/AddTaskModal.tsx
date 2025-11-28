@@ -7,9 +7,10 @@ import { Icon } from "@atoms/Icons/Icon";
 import { InputField } from "@atoms/InputField/InputField";
 import { Message } from "@atoms/Message/Message";
 import { Text } from "@atoms/Text/Text";
+import type { GeneralTodo } from "@prisma/client";
 import * as Dialog from "@radix-ui/react-dialog";
-import { useActionState, useEffect, useRef } from "react";
-import { FormState, saveGeneralTodo } from "../../actions/generalTodos";
+import { useRef, useState, useTransition } from "react";
+import { saveGeneralTodo } from "../../actions/generalTodos";
 
 type AddTaskModalProps = {
 	open: boolean;
@@ -20,24 +21,72 @@ type AddTaskModalProps = {
 		todoId: string;
 		initialText: string;
 	};
-};
-
-const initialState: FormState = {
-	error: undefined,
+	onOptimisticAdd?: (todo: GeneralTodo) => void;
+	onOptimisticUpdate?: (todoId: string, text: string) => void;
+	onSuccess?: () => void;
 };
 
 export function AddTaskModal(props: AddTaskModalProps) {
-	const { open, onOpenAction, defaultValue, renderTrigger = true, editMode } = props;
+	const {
+		open,
+		onOpenAction,
+		defaultValue,
+		renderTrigger = true,
+		editMode,
+		onOptimisticAdd,
+		onOptimisticUpdate,
+		onSuccess,
+	} = props;
 	const isEditMode = !!editMode;
-	const [state, formAction, isPending] = useActionState(saveGeneralTodo, initialState);
+	const [error, setError] = useState<string | undefined>(undefined);
+	const [isPending, startTransition] = useTransition();
 	const formRef = useRef<HTMLFormElement>(null);
 
-	useEffect(() => {
-		if (state.success && !isPending) {
-			onOpenAction(false);
-			formRef.current?.reset();
+	const handleSaveClick = () => {
+		setError(undefined);
+
+		const formData = new FormData(formRef.current!);
+		const text = formData.get("text") as string;
+
+		if (!text || text.trim().length === 0) {
+			setError("Task text is required");
+			return;
 		}
-	}, [state.success, isPending, onOpenAction]);
+
+		if (isEditMode) {
+			if (onOptimisticUpdate) {
+				onOptimisticUpdate(editMode.todoId, text.trim());
+			}
+		} else {
+			if (onOptimisticAdd) {
+				const tempTodo: GeneralTodo = {
+					id: `temp-${Date.now()}`,
+					userId: "",
+					text: text.trim(),
+					order: 0,
+					createdAt: new Date(),
+					updatedAt: new Date(),
+				};
+				onOptimisticAdd(tempTodo);
+			}
+		}
+
+		onOpenAction(false);
+		formRef.current?.reset();
+
+		startTransition(async () => {
+			const result = await saveGeneralTodo({ error: undefined }, formData);
+
+			if (result.error) {
+				setError(result.error);
+				onOpenAction(true);
+			} else if (result.success) {
+				if (onSuccess) {
+					onSuccess();
+				}
+			}
+		});
+	};
 
 	const formKey = isEditMode ? editMode.todoId : "create";
 
@@ -56,7 +105,7 @@ export function AddTaskModal(props: AddTaskModalProps) {
 					<Dialog.Title className={styles["title"]}>
 						<Text>{isEditMode ? "Edit Task" : "Add New Task"}</Text>
 					</Dialog.Title>
-					<form action={formAction} ref={formRef} key={formKey}>
+					<form ref={formRef} key={formKey}>
 						{isEditMode && <input type="hidden" name="todoId" value={editMode.todoId} />}
 						<fieldset className={styles["fieldset"]}>
 							<InputField
@@ -65,10 +114,16 @@ export function AddTaskModal(props: AddTaskModalProps) {
 								required
 							/>
 						</fieldset>
-						{state.error && <Message variant="error">{state.error}</Message>}
+						{error && <Message variant="error">{error}</Message>}
 						<div className={styles["button-group"]}>
-							<Button type="submit" variant="primary" fontWeight={700} disabled={isPending}>
-								{isPending ? "Saving..." : "Save Task"}
+							<Button
+								type="button"
+								variant="primary"
+								fontWeight={700}
+								disabled={isPending}
+								onClick={handleSaveClick}
+							>
+								Save Task
 							</Button>
 
 							<Dialog.Close asChild>

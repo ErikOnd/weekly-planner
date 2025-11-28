@@ -7,45 +7,54 @@ import { DraggableTaskItem } from "@components/DraggableTaskItem/DraggableTaskIt
 import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useDraggableTodos } from "@hooks/useDraggableTodos";
-import { useGeneralTodos } from "@hooks/useGeneralTodos";
 import { useTodoToggle } from "@hooks/useTodoToggle";
 import type { GeneralTodo } from "@prisma/client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./RememberContent.module.scss";
 
+type TodosState = {
+	todos: GeneralTodo[];
+	loading: boolean;
+	error: string | null;
+	isPending: boolean;
+	deleteTodo: (todoId: string) => Promise<void>;
+	addTodo: (todo: GeneralTodo) => void;
+	updateTodo: (todoId: string, text: string) => void;
+	refresh: () => Promise<void>;
+	silentRefresh: () => Promise<void>;
+};
+
 type RememberContentProps = {
-	rememberItems?: string[];
+	todosState: TodosState;
 };
 
 export function RememberContent(props: RememberContentProps) {
-	const {} = props;
+	const { todosState } = props;
+	const { todos, loading, deleteTodo, addTodo, updateTodo, silentRefresh } = todosState;
 
 	const [modalOpen, setModalOpen] = useState(false);
 	const [editingTodo, setEditingTodo] = useState<GeneralTodo | null>(null);
-	const { todos, loading, deleteTodo, refresh } = useGeneralTodos();
 	const { checkedTodos, handleTodoToggle } = useTodoToggle(deleteTodo);
 	const { localTodos, activeTodo, sensors, handleDragStart, handleDragEnd, handleDragCancel } = useDraggableTodos(
 		todos,
 	);
-
-	useEffect(() => {
-		if (!modalOpen) {
-			refresh();
-			setEditingTodo(null);
-		}
-	}, [modalOpen, refresh]);
 
 	const handleEditTodo = (todo: GeneralTodo) => {
 		setEditingTodo(todo);
 		setModalOpen(true);
 	};
 
+	const handleModalChange = (open: boolean) => {
+		setModalOpen(open);
+		if (!open) {
+			setEditingTodo(null);
+		}
+	};
+
 	return (
 		<div className={styles["remember-content"]}>
 			<div className={styles["task-items"]}>
-				{loading
-					? <Spinner size="lg" className={styles["remember-loading"]} />
-					: localTodos.length === 0
+				{localTodos.length === 0
 					? <Text size="sm">No todos yet. Click + to add one!</Text>
 					: (
 						<DndContext
@@ -84,13 +93,16 @@ export function RememberContent(props: RememberContentProps) {
 			</div>
 			<AddTaskModal
 				open={modalOpen}
-				onOpenAction={setModalOpen}
+				onOpenAction={handleModalChange}
 				editMode={editingTodo
 					? {
 						todoId: editingTodo.id,
 						initialText: editingTodo.text,
 					}
 					: undefined}
+				onOptimisticAdd={addTodo}
+				onOptimisticUpdate={updateTodo}
+				onSuccess={silentRefresh}
 			/>
 		</div>
 	);

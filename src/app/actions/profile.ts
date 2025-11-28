@@ -1,19 +1,17 @@
 "use server";
 
+import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { createClient } from "@utils/supabase/server";
 
 export async function checkUserExists() {
 	try {
-		const supabase = await createClient();
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-		if (authError || !user) {
-			return { success: false, error: "Not authenticated" };
+		const authResult = await getCurrentUser();
+		if (!authResult.success) {
+			return { success: false, error: authResult.error };
 		}
 
 		const profile = await prisma.profile.findUnique({
-			where: { id: user.id },
+			where: { id: authResult.userId },
 		});
 
 		if (!profile) {
@@ -29,6 +27,7 @@ export async function checkUserExists() {
 
 export async function createNewUser(displayName?: string) {
 	try {
+		const { createClient } = await import("@utils/supabase/server");
 		const supabase = await createClient();
 		const { data: { user }, error: authError } = await supabase.auth.getUser();
 

@@ -1,7 +1,7 @@
 "use server";
 
+import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import { createClient } from "@utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export type FormState = {
@@ -22,15 +22,14 @@ export async function saveGeneralTodo(_prevState: FormState, formData: FormData)
 
 export async function createGeneralTodo(_prevState: FormState, formData: FormData): Promise<FormState> {
 	try {
-		const supabase = await createClient();
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-		if (authError || !user) {
+		const authResult = await getCurrentUser();
+		if (!authResult.success) {
 			return {
-				error: "You must be logged in to create a task",
+				error: authResult.error,
 				success: false,
 			};
 		}
+
 		const text = formData.get("text") as string;
 
 		if (!text || text.trim().length === 0) {
@@ -41,19 +40,18 @@ export async function createGeneralTodo(_prevState: FormState, formData: FormDat
 		}
 
 		const maxOrder = await prisma.generalTodo.findFirst({
-			where: { userId: user.id },
+			where: { userId: authResult.userId },
 			orderBy: { order: "desc" },
 			select: { order: true },
 		});
-		await prisma.generalTodo.create({
+
+		const newTodo = await prisma.generalTodo.create({
 			data: {
-				userId: user.id,
+				userId: authResult.userId,
 				text: text.trim(),
 				order: (maxOrder?.order ?? -1) + 1,
 			},
 		});
-
-		revalidatePath("/");
 
 		return {
 			message: "Task created successfully",
@@ -70,15 +68,13 @@ export async function createGeneralTodo(_prevState: FormState, formData: FormDat
 
 export async function getGeneralTodos() {
 	try {
-		const supabase = await createClient();
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-		if (authError || !user) {
+		const authResult = await getCurrentUser();
+		if (!authResult.success) {
 			return [];
 		}
 
 		return await prisma.generalTodo.findMany({
-			where: { userId: user.id },
+			where: { userId: authResult.userId },
 			orderBy: { order: "asc" },
 		});
 	} catch (error) {
@@ -89,35 +85,20 @@ export async function getGeneralTodos() {
 
 export async function deleteGeneralTodo(todoId: string): Promise<FormState> {
 	try {
-		const supabase = await createClient();
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-		if (authError || !user) {
+		const authResult = await getCurrentUser();
+		if (!authResult.success) {
 			return {
-				error: "You must be logged in to delete a task",
+				error: authResult.error,
 				success: false,
 			};
 		}
 
-		const todo = await prisma.generalTodo.findFirst({
+		await prisma.generalTodo.deleteMany({
 			where: {
 				id: todoId,
-				userId: user.id,
+				userId: authResult.userId,
 			},
 		});
-
-		if (!todo) {
-			return {
-				error: "Task not found",
-				success: false,
-			};
-		}
-
-		await prisma.generalTodo.delete({
-			where: { id: todoId },
-		});
-
-		revalidatePath("/");
 
 		return {
 			message: "Task deleted successfully",
@@ -134,12 +115,10 @@ export async function deleteGeneralTodo(todoId: string): Promise<FormState> {
 
 export async function updateGeneralTodo(_prevState: FormState, formData: FormData): Promise<FormState> {
 	try {
-		const supabase = await createClient();
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-		if (authError || !user) {
+		const authResult = await getCurrentUser();
+		if (!authResult.success) {
 			return {
-				error: "You must be logged in to update a task",
+				error: authResult.error,
 				success: false,
 			};
 		}
@@ -161,28 +140,15 @@ export async function updateGeneralTodo(_prevState: FormState, formData: FormDat
 			};
 		}
 
-		const todo = await prisma.generalTodo.findFirst({
+		await prisma.generalTodo.updateMany({
 			where: {
 				id: todoId,
-				userId: user.id,
+				userId: authResult.userId,
 			},
-		});
-
-		if (!todo) {
-			return {
-				error: "Task not found",
-				success: false,
-			};
-		}
-
-		await prisma.generalTodo.update({
-			where: { id: todoId },
 			data: {
 				text: text.trim(),
 			},
 		});
-
-		revalidatePath("/");
 
 		return {
 			message: "Task updated successfully",
@@ -199,12 +165,10 @@ export async function updateGeneralTodo(_prevState: FormState, formData: FormDat
 
 export async function reorderGeneralTodos(todoIds: string[]): Promise<FormState> {
 	try {
-		const supabase = await createClient();
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-		if (authError || !user) {
+		const authResult = await getCurrentUser();
+		if (!authResult.success) {
 			return {
-				error: "You must be logged in to reorder tasks",
+				error: authResult.error,
 				success: false,
 			};
 		}
@@ -214,7 +178,7 @@ export async function reorderGeneralTodos(todoIds: string[]): Promise<FormState>
 				prisma.generalTodo.updateMany({
 					where: {
 						id,
-						userId: user.id,
+						userId: authResult.userId,
 					},
 					data: {
 						order: index,
@@ -222,8 +186,6 @@ export async function reorderGeneralTodos(todoIds: string[]): Promise<FormState>
 				})
 			),
 		);
-
-		revalidatePath("/");
 
 		return {
 			message: "Tasks reordered successfully",

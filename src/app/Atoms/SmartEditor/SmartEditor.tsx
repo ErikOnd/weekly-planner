@@ -5,11 +5,11 @@ import styles from "./SmartEditor.module.scss";
 import { en } from "@blocknote/core/locales";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
-import { filterSuggestionItems, type Block } from "@blocknote/core";
-import { SuggestionMenuController, useCreateBlockNote } from "@blocknote/react";
-import { getSlashMenuItemsWithAliases } from "@utils/blocknoteSlashMenu";
 import { useTheme } from "@/contexts/ThemeContext";
+import { type Block, filterSuggestionItems } from "@blocknote/core";
+import { SuggestionMenuController, useCreateBlockNote } from "@blocknote/react";
 import { useBlocknoteArrowUpFix } from "@hooks/useBlocknoteArrowUpFix";
+import { getSlashMenuItemsWithAliases } from "@utils/blocknoteSlashMenu";
 
 type SmartEditorProps = {
 	initialContent?: Block[];

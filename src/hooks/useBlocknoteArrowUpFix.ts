@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import type { BlockNoteEditor } from "@blocknote/core";
+import { useEffect } from "react";
 
 /**
  * Custom hook to fix arrow up navigation in Blocknote checklist items.

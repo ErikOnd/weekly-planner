@@ -44,6 +44,44 @@ npx prisma migrate deploy
 npx prisma studio
 ```
 
+## MCP Servers
+
+This project has several MCP (Model Context Protocol) servers configured for enhanced development capabilities:
+
+### Next.js DevTools (`next-devtools`)
+
+- **Purpose**: Provides Next.js-specific tooling and insights
+- **Use when**: Working with Next.js routing, server components, or build optimization
+- **Command**: `npx -y next-devtools-mcp@latest`
+
+### Prisma Local (`Prisma-Local`)
+
+- **Purpose**: Direct Prisma schema and database interaction
+- **Use when**:
+  - Modifying database schema in `prisma/schema.prisma`
+  - Creating or applying migrations
+  - Querying database structure
+  - Generating Prisma client
+- **Command**: `npx -y prisma mcp`
+
+### Supabase (`supabase`)
+
+- **Purpose**: Supabase project management and queries
+- **Use when**:
+  - Checking authentication configuration
+  - Managing Supabase tables and policies
+  - Debugging auth issues
+  - Working with Supabase-specific features
+- **Command**: `npx -y @supabase/mcp-server-supabase@latest`
+- **Note**: Uses access token from environment
+
+### MCP Usage Guidelines
+
+- **Always prefer MCP servers** over manual CLI commands when available
+- Use Prisma-Local for all database schema work instead of raw `npx prisma` commands
+- Use Supabase MCP for checking project configuration and auth setup
+- These servers provide context-aware assistance beyond basic CLI tools
+
 ## Architecture
 
 ### Component Organization
@@ -103,23 +141,37 @@ Uses BlockNote (based on ProseMirror) with Mantine styling:
 
 SVGs are imported as React components using `@svgr/webpack` (configured in `next.config.ts`).
 
-## Code Style
+## Code Style & Standards
 
-- Formatting: Uses **dprint** (tabs, 120 line width)
+### Formatting
+
+- Uses **dprint** (tabs, 120 line width)
 - Always run `npm run format` before committing
 - ESLint: Next.js TypeScript config with core-web-vitals
 - Generated files in `src/generated/**` are ignored by ESLint
+
+### CSS/Styling Rules
+
+- **Never use inline styling** - all styles must be in `.module.scss` files
+- **CSS class names must use kebab-case**: `this-is-a-css-class-name`
+- **For conditional classes**: Use `clsx` utility
+- **Color management**:
+  1. First check `_global.scss` for existing colors
+  2. If no suitable color exists, add new color variable to `_variables.scss`
+  3. Then add it to `_global.scss`
+  4. Finally use it in your component
+  - **Never use hardcoded colors** like `#dc2626` directly in components
+
+### General Guidelines
+
+- Don't create unnecessary comments
+- Keep code clean and self-documenting
 
 ## Environment Variables
 
 Required in `.env.local`:
 
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-- `DATABASE_URL` (PostgreSQL connection string)
-- `DIRECT_URL` (Direct database connection for migrations)
-- When dealing with Continually applied css classes use clsx
-- don't use new colours like #dc2626, first look in my _global.scss and look if a color that might fit is there. If not, go to the _variables.scss and add a new color variable there than add it in my _global.scss and that use it in the component
-- never ever use inline styling
-- CSS class names must always use kebab-case, for example: this-is-a-css-class-name
-- don't create unnecessary comments
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` - Supabase anonymous/public key
+- `DATABASE_URL` - PostgreSQL connection string (used by Prisma)
+- `DIRECT_URL` - Direct database connection for migrations

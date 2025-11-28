@@ -1,8 +1,8 @@
 "use server";
 
+import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
-import {createClient} from "@utils/supabase/server";
-import type {Block} from "@blocknote/core";
+import type { Block } from "@blocknote/core";
 
 export type DailyNoteResult = {
 	error?: string;
@@ -11,12 +11,10 @@ export type DailyNoteResult = {
 
 export async function saveDailyNote(date: string, content: Block[]): Promise<DailyNoteResult> {
 	try {
-		const supabase = await createClient();
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-		if (authError || !user) {
+		const authResult = await getCurrentUser();
+		if (!authResult.success) {
 			return {
-				error: "You must be logged in to save a note",
+				error: authResult.error,
 				success: false,
 			};
 		}
@@ -26,7 +24,7 @@ export async function saveDailyNote(date: string, content: Block[]): Promise<Dai
 		await prisma.dailyNote.upsert({
 			where: {
 				userId_date: {
-					userId: user.id,
+					userId: authResult.userId,
 					date: noteDate,
 				},
 			},
@@ -34,7 +32,7 @@ export async function saveDailyNote(date: string, content: Block[]): Promise<Dai
 				content: content,
 			},
 			create: {
-				userId: user.id,
+				userId: authResult.userId,
 				date: noteDate,
 				content: content,
 			},
@@ -54,10 +52,8 @@ export async function saveDailyNote(date: string, content: Block[]): Promise<Dai
 
 export async function getDailyNote(date: string) {
 	try {
-		const supabase = await createClient();
-		const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-		if (authError || !user) {
+		const authResult = await getCurrentUser();
+		if (!authResult.success) {
 			return null;
 		}
 
@@ -66,7 +62,7 @@ export async function getDailyNote(date: string) {
 		return await prisma.dailyNote.findUnique({
 			where: {
 				userId_date: {
-					userId: user.id,
+					userId: authResult.userId,
 					date: noteDate,
 				},
 			},

@@ -9,38 +9,51 @@ import WeeklySlider from "@components/WeeklySlider/WeeklySlider";
 import { closestCenter, DndContext, DragOverlay } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useDraggableTodos } from "@hooks/useDraggableTodos";
-import { useGeneralTodos } from "@hooks/useGeneralTodos";
 import { useTodoToggle } from "@hooks/useTodoToggle";
 import type { GeneralTodo } from "@prisma/client";
 import { isCurrentWeek } from "@utils/usCurrentWeek";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./Sidebar.module.scss";
+
+type TodosState = {
+	todos: GeneralTodo[];
+	loading: boolean;
+	error: string | null;
+	isPending: boolean;
+	deleteTodo: (todoId: string) => Promise<void>;
+	addTodo: (todo: GeneralTodo) => void;
+	updateTodo: (todoId: string, text: string) => void;
+	refresh: () => Promise<void>;
+	silentRefresh: () => Promise<void>;
+};
 
 type SidebarProps = {
 	baseDate: Date;
 	setBaseDateAction: (date: Date) => void;
 	rangeLabel: string;
+	todosState: TodosState;
 };
 
-export function Sidebar({ baseDate, setBaseDateAction, rangeLabel }: SidebarProps) {
+export function Sidebar({ baseDate, setBaseDateAction, rangeLabel, todosState }: SidebarProps) {
+	const { todos, loading, deleteTodo, addTodo, updateTodo, silentRefresh } = todosState;
+
 	const [isAddOpen, setIsAddOpen] = useState(false);
 	const [editingTodo, setEditingTodo] = useState<GeneralTodo | null>(null);
-	const { todos, loading, deleteTodo, refresh } = useGeneralTodos();
 	const { checkedTodos, handleTodoToggle } = useTodoToggle(deleteTodo);
 	const { localTodos, activeTodo, sensors, handleDragStart, handleDragEnd, handleDragCancel } = useDraggableTodos(
 		todos,
 	);
 
-	useEffect(() => {
-		if (!isAddOpen) {
-			refresh();
-			setEditingTodo(null);
-		}
-	}, [isAddOpen, refresh]);
-
 	const handleEditTodo = (todo: GeneralTodo) => {
 		setEditingTodo(todo);
 		setIsAddOpen(true);
+	};
+
+	const handleModalChange = (open: boolean) => {
+		setIsAddOpen(open);
+		if (!open) {
+			setEditingTodo(null);
+		}
 	};
 
 	return (
@@ -71,9 +84,7 @@ export function Sidebar({ baseDate, setBaseDateAction, rangeLabel }: SidebarProp
 						</button>
 					</div>
 					<div className={styles["remember-items"]}>
-						{loading
-							? <Spinner size="lg" className={styles["remember-loading"]} />
-							: localTodos.length === 0
+						{localTodos.length === 0
 							? <Text size="sm">No todos yet. Click + to add one!</Text>
 							: (
 								<DndContext
@@ -114,7 +125,7 @@ export function Sidebar({ baseDate, setBaseDateAction, rangeLabel }: SidebarProp
 			</div>
 			<AddTaskModal
 				open={isAddOpen}
-				onOpenAction={setIsAddOpen}
+				onOpenAction={handleModalChange}
 				renderTrigger={false}
 				editMode={editingTodo
 					? {
@@ -122,6 +133,9 @@ export function Sidebar({ baseDate, setBaseDateAction, rangeLabel }: SidebarProp
 						initialText: editingTodo.text,
 					}
 					: undefined}
+				onOptimisticAdd={addTodo}
+				onOptimisticUpdate={updateTodo}
+				onSuccess={silentRefresh}
 			/>
 		</div>
 	);
