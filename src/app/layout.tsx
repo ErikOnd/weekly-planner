@@ -20,8 +20,9 @@ export default function RootLayout({ children }: Readonly<{
 						__html: `
 							(function() {
 								try {
-									const theme = localStorage.getItem('weekly-planner-theme') ||
-										(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+									const stored = localStorage.getItem('weekly-planner-theme') || 'system';
+									const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+									const theme = stored === 'system' ? systemTheme : stored;
 									document.documentElement.setAttribute('data-theme', theme);
 								} catch (e) {}
 							})();

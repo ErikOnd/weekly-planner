@@ -2,8 +2,10 @@
 
 import styles from "./DesktopNavigation.module.scss";
 
+import { Button } from "@atoms/Button/Button";
+import { Icon } from "@atoms/Icons/Icon";
+import { ProfileDialog } from "@atoms/ProfileDialog/ProfileDialog";
 import { Text } from "@atoms/Text/Text";
-import ThemeToggle from "@atoms/ThemeToggle/ThemeToggle";
 
 type DesktopNavigationProps = {
 	rangeLabel: string;
@@ -20,7 +22,11 @@ export function DesktopNavigation({ rangeLabel }: DesktopNavigationProps) {
 				<Text size="lg" className={styles["current-week"]}>{rangeLabel}</Text>
 			</div>
 			<div className={styles["actions-section"]}>
-				<ThemeToggle />
+				<ProfileDialog>
+					<Button variant="secondary">
+						<Icon name="user" size={20} ariaLabel="Profile" />
+					</Button>
+				</ProfileDialog>
 			</div>
 		</nav>
 	);
