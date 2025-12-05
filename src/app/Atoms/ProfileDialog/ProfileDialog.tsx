@@ -1,12 +1,12 @@
 "use client";
 
+import { useTheme } from "@/contexts/ThemeContext";
+import { Button } from "@atoms/Button/Button";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Switch from "@radix-ui/react-switch";
-import { Button } from "@atoms/Button/Button";
-import { useTheme } from "@/contexts/ThemeContext";
-import { getUserProfile, updateUserProfile } from "../../actions/profile";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { getUserProfile, updateUserProfile } from "../../actions/profile";
 import styles from "./ProfileDialog.module.scss";
 
 type ProfileDialogProps = {
