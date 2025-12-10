@@ -6,7 +6,7 @@ import { TodosProvider } from "@/contexts/TodosContext";
 import React, { ReactNode } from "react";
 
 export const metadata: Metadata = {
-	title: "Weekly Planner",
+	title: "Planner7",
 	description: "A minimal weekly planner for scheduling, todos, and personal organization",
 };
 

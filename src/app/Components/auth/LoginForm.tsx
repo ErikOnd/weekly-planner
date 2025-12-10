@@ -29,7 +29,7 @@ export function LoginForm() {
 				Welcome back
 			</Text>
 			<Text as="p" size="sm" className={styles.subtitle}>
-				Please sign in to continue to Weekly Planner
+				Please sign in to continue to Planner7
 			</Text>
 
 			<div className={styles["input-group"]}>

@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@atoms/Button/Button";
 import { Text } from "@atoms/Text/Text";
 import { AddTaskModal } from "@components/AddTaskModal/AddTaskModal";
 import { DraggableTodoItem } from "@components/DraggableTodoItem/DraggableTodoItem";
@@ -12,7 +13,6 @@ import type { GeneralTodo } from "@prisma/client";
 import { isCurrentWeek } from "@utils/usCurrentWeek";
 import { useState } from "react";
 import styles from "./Sidebar.module.scss";
-import {Button} from "@atoms/Button/Button";
 
 type TodosState = {
 	todos: GeneralTodo[];

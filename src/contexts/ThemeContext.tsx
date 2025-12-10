@@ -14,7 +14,7 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-const THEME_STORAGE_KEY = "weekly-planner-theme";
+const THEME_STORAGE_KEY = "planner7-theme";
 
 function getInitialTheme(): Theme {
 	if (typeof window === "undefined") return "system";

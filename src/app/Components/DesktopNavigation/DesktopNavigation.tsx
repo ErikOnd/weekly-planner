@@ -14,7 +14,7 @@ export function DesktopNavigation({ rangeLabel }: DesktopNavigationProps) {
 	return (
 		<nav className={styles["desktop-navigation"]}>
 			<div className={styles["logo-section"]}>
-				<Text size="xl" className={styles["logo-text"]}>WeeklyPlanner</Text>
+				<Text size="xl" className={styles["logo-text"]}>Planner7</Text>
 			</div>
 			<div className={styles["main-section"]}>
 				<Text size="xl">Weekly Overview</Text>
@@ -22,7 +22,7 @@ export function DesktopNavigation({ rangeLabel }: DesktopNavigationProps) {
 			</div>
 			<div className={styles["actions-section"]}>
 				<ProfileDialog>
-					<Button variant="secondary" icon="user" iconSize={36}/>
+					<Button variant="secondary" icon="user" iconSize={36} />
 				</ProfileDialog>
 			</div>
 		</nav>
