@@ -45,7 +45,7 @@ export async function createGeneralTodo(_prevState: FormState, formData: FormDat
 			select: { order: true },
 		});
 
-		const newTodo = await prisma.generalTodo.create({
+		await prisma.generalTodo.create({
 			data: {
 				userId: authResult.userId,
 				text: text.trim(),

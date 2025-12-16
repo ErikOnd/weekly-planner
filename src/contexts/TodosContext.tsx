@@ -58,7 +58,7 @@ export function TodosProvider({ children }: { children: ReactNode }) {
 			try {
 				const data = await getGeneralTodos();
 				setTodos(data);
-			} catch (fetchError) {
+			} catch {
 				setError("Failed to restore todos after delete error");
 			}
 		}

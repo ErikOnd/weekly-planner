@@ -50,7 +50,7 @@ export default function ResetPasswordPage() {
 					router.push("/");
 				}, 2000);
 			}
-		} catch (err) {
+		} catch {
 			setErrorMsg("An unexpected error occurred");
 		} finally {
 			setLoading(false);

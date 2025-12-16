@@ -15,7 +15,11 @@ export function useTodoToggle(deleteTodo: (todoId: string) => Promise<void>) {
 
 		setCheckedTodos(prev => {
 			const next = new Set(prev);
-			checked ? next.add(todoId) : next.delete(todoId);
+			if (checked) {
+				next.add(todoId);
+			} else {
+				next.delete(todoId);
+			}
 			return next;
 		});
 
@@ -35,9 +39,10 @@ export function useTodoToggle(deleteTodo: (todoId: string) => Promise<void>) {
 	}, [deleteTodo]);
 
 	useEffect(() => {
+		const timeouts = deletionTimeoutsRef.current;
 		return () => {
-			deletionTimeoutsRef.current.forEach(clearTimeout);
-			deletionTimeoutsRef.current.clear();
+			timeouts.forEach(clearTimeout);
+			timeouts.clear();
 		};
 	}, []);
 
