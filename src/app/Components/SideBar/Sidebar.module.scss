@@ -60,7 +60,7 @@
 		gap: var(--space-sm);
 		max-height: 50dvh;
 		overflow-y: auto;
-		padding: var(--space-lg) var(--space-lg) var(--space-lg) var(--space-lg);
+		padding-inline: var(--space-lg);
 	}
 
 	.remember-loading {
