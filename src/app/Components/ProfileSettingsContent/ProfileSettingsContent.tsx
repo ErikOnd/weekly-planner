@@ -102,7 +102,7 @@ export function ProfileSettingsContent({
 									<span className={styles["notification-label"]}>Email notifications</span>
 									<span className={styles["notification-description"]}>Receive email updates about your tasks</span>
 								</div>
-								<Switch.Root className={styles["switch"]} defaultChecked aria-invalid={true}>
+								<Switch.Root className={styles["switch"]} defaultChecked aria-label="Email notifications">
 									<Switch.Thumb className={styles["switch-thumb"]} />
 								</Switch.Root>
 							</div>
@@ -111,7 +111,7 @@ export function ProfileSettingsContent({
 									<span className={styles["notification-label"]}>Push notifications</span>
 									<span className={styles["notification-description"]}>Get notified about upcoming tasks</span>
 								</div>
-								<Switch.Root className={styles["switch"]}>
+								<Switch.Root className={styles["switch"]} aria-label="Push notifications">
 									<Switch.Thumb className={styles["switch-thumb"]} />
 								</Switch.Root>
 							</div>

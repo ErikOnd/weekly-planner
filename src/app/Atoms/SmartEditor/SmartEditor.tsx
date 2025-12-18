@@ -14,9 +14,10 @@ import { getSlashMenuItemsWithAliases } from "@utils/blocknoteSlashMenu";
 type SmartEditorProps = {
 	initialContent?: Block[];
 	onChange?: (content: Block[]) => void;
+	ariaLabel?: string;
 };
 
-export default function SmartEditor({ initialContent, onChange }: SmartEditorProps) {
+export default function SmartEditor({ initialContent, onChange, ariaLabel }: SmartEditorProps) {
 	const { effectiveTheme, mounted } = useTheme();
 
 	const editor = useCreateBlockNote({
@@ -44,6 +45,8 @@ export default function SmartEditor({ initialContent, onChange }: SmartEditorPro
 					onChange(editor.document);
 				}
 			}}
+			data-content-editable-leaf="true"
+			aria-label={ariaLabel || "Text editor"}
 		>
 			<SuggestionMenuController
 				triggerCharacter="/"

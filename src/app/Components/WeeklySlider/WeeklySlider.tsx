@@ -18,12 +18,14 @@ export default function WeeklySlider(props: WeeklySlider) {
 				variant="ghost"
 				icon="chevron-left"
 				onClick={() => setBaseDate(new Date(baseDate.getTime() - 7 * dayInMs))}
+				aria-label="Previous week"
 			/>
 			<Text>{rangeLabel}</Text>
 			<Button
 				variant="ghost"
 				icon="chevron-right"
 				onClick={() => setBaseDate(new Date(baseDate.getTime() + 7 * dayInMs))}
+				aria-label="Next week"
 			/>
 		</div>
 	);

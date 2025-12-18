@@ -34,7 +34,7 @@ export function ProfileDialog({ children }: ProfileDialogProps) {
 					<div className={styles["dialog-header"]}>
 						<Dialog.Title className={styles["dialog-title"]}>Profile</Dialog.Title>
 						<Dialog.Close asChild>
-							<Button variant="secondary" icon="close" className={styles["close-button"]} />
+							<Button variant="secondary" icon="close" className={styles["close-button"]} aria-label="Close dialog" />
 						</Dialog.Close>
 					</div>
 					<div className={styles["dialog-body"]}>

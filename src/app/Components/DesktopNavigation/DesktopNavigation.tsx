@@ -22,7 +22,7 @@ export function DesktopNavigation({ rangeLabel }: DesktopNavigationProps) {
 			</div>
 			<div className={styles["actions-section"]}>
 				<ProfileDialog>
-					<Button variant="secondary" icon="user" iconSize={36} />
+					<Button variant="secondary" icon="user" iconSize={36} aria-label="Open profile menu" />
 				</ProfileDialog>
 			</div>
 		</nav>

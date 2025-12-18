@@ -49,7 +49,7 @@ export default function HomePage() {
 	};
 
 	return (
-		<div className={styles["home-page"]}>
+		<main className={styles["home-page"]}>
 			{isMobile
 				? (
 					<div className={styles["mobile-view"]}>
@@ -78,6 +78,6 @@ export default function HomePage() {
 						</div>
 					</div>
 				)}
-		</div>
+		</main>
 	);
 }

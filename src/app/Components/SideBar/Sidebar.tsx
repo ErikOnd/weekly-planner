@@ -61,7 +61,7 @@ export function Sidebar({ baseDate, setBaseDateAction, rangeLabel, todosState }:
 					<WeeklySlider baseDate={baseDate} rangeLabel={rangeLabel} setBaseDate={setBaseDateAction} />
 					{isCurrentWeek(baseDate) && (
 						<div className={styles["current-week-indicator"]}>
-							<Text>Current Week</Text>
+							<Text fontWeight={700}>Current Week</Text>
 						</div>
 					)}
 				</div>
@@ -75,6 +75,7 @@ export function Sidebar({ baseDate, setBaseDateAction, rangeLabel, todosState }:
 							icon="plus"
 							className={styles["add-header-button"]}
 							onClick={() => setIsAddOpen(true)}
+							aria-label="Add todo"
 							aria-haspopup="dialog"
 							aria-expanded={isAddOpen}
 						/>

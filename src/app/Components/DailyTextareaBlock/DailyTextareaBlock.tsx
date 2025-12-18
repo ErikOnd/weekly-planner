@@ -73,7 +73,14 @@ function DailyTextareaBlockComponent(props: DailyTextareaProps) {
 				<Text className={styles["month-and-day"]}>{date}</Text>
 			</div>
 			<div className={styles["editor-container"]}>
-				{!isLoading && <SmartEditor key={dateKey} initialContent={content} onChange={handleChange} />}
+				{!isLoading && (
+					<SmartEditor
+						key={dateKey}
+						initialContent={content}
+						onChange={handleChange}
+						ariaLabel={`Notes for ${weekday}, ${date}`}
+					/>
+				)}
 			</div>
 		</div>
 	);
