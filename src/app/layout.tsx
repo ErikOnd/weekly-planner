@@ -21,7 +21,7 @@ export default function RootLayout({ children }: Readonly<{
 						__html: `
 							(function() {
 								try {
-									const stored = localStorage.getItem('weekly-planner-theme') || 'system';
+									const stored = localStorage.getItem('planner7-theme') || 'system';
 									const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 									const theme = stored === 'system' ? systemTheme : stored;
 									document.documentElement.setAttribute('data-theme', theme);
