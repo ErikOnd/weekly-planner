@@ -21,6 +21,7 @@ type ProfileSettingsContentProps = {
 	successMessage: string | null;
 	hasChanges: boolean;
 	handleSave: () => Promise<void>;
+	handleLogout?: () => Promise<void>;
 	styles: Record<string, string>;
 };
 
@@ -36,6 +37,7 @@ export function ProfileSettingsContent({
 	successMessage,
 	hasChanges,
 	handleSave,
+	handleLogout,
 	styles,
 }: ProfileSettingsContentProps) {
 	const [selectedTab, setSelectedTab] = useState<TabType>("general");
@@ -100,7 +102,7 @@ export function ProfileSettingsContent({
 									<span className={styles["notification-label"]}>Email notifications</span>
 									<span className={styles["notification-description"]}>Receive email updates about your tasks</span>
 								</div>
-								<Switch.Root className={styles["switch"]} defaultChecked>
+								<Switch.Root className={styles["switch"]} defaultChecked aria-invalid={true}>
 									<Switch.Thumb className={styles["switch-thumb"]} />
 								</Switch.Root>
 							</div>
@@ -148,6 +150,18 @@ export function ProfileSettingsContent({
 								</button>
 							</div>
 						</section>
+
+						{handleLogout && (
+							<section className={styles["settings-section"]}>
+								<h3 className={styles["section-heading"]}>Sign Out</h3>
+								<p className={styles["section-description"]}>Sign out of your account</p>
+								<div className={styles["save-button-container"]}>
+									<Button variant="secondary" onClick={handleLogout}>
+										Logout
+									</Button>
+								</div>
+							</section>
+						)}
 					</div>
 				);
 			case "account":

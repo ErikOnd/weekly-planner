@@ -4,6 +4,8 @@ import { Button } from "@atoms/Button/Button";
 import { ProfileSettingsContent } from "@components/ProfileSettingsContent/ProfileSettingsContent";
 import { useProfileSettings } from "@hooks/useProfileSettings";
 import * as Dialog from "@radix-ui/react-dialog";
+import { createClient } from "@utils/supabase/client";
+import { useRouter } from "next/navigation";
 import React from "react";
 import styles from "./ProfileDialog.module.scss";
 
@@ -13,6 +15,13 @@ type ProfileDialogProps = {
 
 export function ProfileDialog({ children }: ProfileDialogProps) {
 	const profileSettings = useProfileSettings();
+	const router = useRouter();
+	const supabase = createClient();
+
+	const handleLogout = async () => {
+		await supabase.auth.signOut();
+		router.push("/login");
+	};
 
 	return (
 		<Dialog.Root>
@@ -29,7 +38,7 @@ export function ProfileDialog({ children }: ProfileDialogProps) {
 						</Dialog.Close>
 					</div>
 					<div className={styles["dialog-body"]}>
-						<ProfileSettingsContent {...profileSettings} styles={styles} />
+						<ProfileSettingsContent {...profileSettings} handleLogout={handleLogout} styles={styles} />
 					</div>
 				</Dialog.Content>
 			</Dialog.Portal>
