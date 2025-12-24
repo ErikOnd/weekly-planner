@@ -5,7 +5,6 @@ import styles from "./SmartEditor.module.scss";
 import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
-import "@mantine/core/styles.css";
 import { useTheme } from "@/contexts/ThemeContext";
 import { type Block } from "@blocknote/core";
 import { filterSuggestionItems } from "@blocknote/core/extensions";
