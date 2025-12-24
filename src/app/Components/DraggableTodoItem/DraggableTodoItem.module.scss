@@ -24,12 +24,24 @@
 		align-items: center;
 		gap: var(--space-sm);
 
-		.edit-button {
+		.action-buttons {
+			display: flex;
+			align-items: center;
+			gap: var(--space-xs);
+		}
+
+		.edit-button,
+		.delete-button {
 			height: fit-content;
 			background-color: var(--color-surface);
 			color: var(--color-text-light);
 			cursor: pointer;
 			border: none;
+			padding: 0.25rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: color var(--transition-fast);
 
 			&:hover, &:focus-visible {
 				color: var(--color-primary);
@@ -39,6 +51,12 @@
 				outline: .1rem solid var(--color-primary);
 				outline-offset: .2rem;
 				border-radius: variables.$radius-sm;
+			}
+		}
+
+		.delete-button {
+			&:hover {
+				color: var(--color-error);
 			}
 		}
 	}

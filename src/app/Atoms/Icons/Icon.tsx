@@ -12,6 +12,7 @@ import SignOut from "@assets/icons/sign-out.svg";
 import Star from "@assets/icons/star.svg";
 import Sun from "@assets/icons/sun.svg";
 import User from "@assets/icons/user.svg";
+import Trash from "@assets/icons/trash.svg";
 
 import clsx from "clsx";
 
@@ -30,6 +31,7 @@ const icons = {
 	"moon": Moon,
 	"user": User,
 	"close": Close,
+	"trash": Trash,
 };
 
 export type IconName = keyof typeof icons;

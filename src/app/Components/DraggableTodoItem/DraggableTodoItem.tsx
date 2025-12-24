@@ -13,9 +13,10 @@ type DraggableTodoItemProps = {
 	checked: boolean;
 	onToggle: (checked: boolean) => void;
 	onEdit?: () => void;
+	onDelete?: () => void;
 };
 
-export function DraggableTodoItem({ id, text, checked, onToggle, onEdit }: DraggableTodoItemProps) {
+export function DraggableTodoItem({ id, text, checked, onToggle, onEdit, onDelete }: DraggableTodoItemProps) {
 	const {
 		attributes,
 		listeners,
@@ -42,16 +43,28 @@ export function DraggableTodoItem({ id, text, checked, onToggle, onEdit }: Dragg
 		>
 			<div className={styles["todo-content"]}>
 				<Checkbox label={text} checked={checked} onChange={onToggle} />
-				{onEdit && (
-					<button
-						className={styles["edit-button"]}
-						onClick={onEdit}
-						aria-label="Edit task"
-						type="button"
-					>
-						<Icon name="pencil" />
-					</button>
-				)}
+				<div className={styles["action-buttons"]}>
+					{onEdit && (
+						<button
+							className={styles["edit-button"]}
+							onClick={onEdit}
+							aria-label="Edit task"
+							type="button"
+						>
+							<Icon name="pencil" />
+						</button>
+					)}
+					{onDelete && (
+						<button
+							className={styles["delete-button"]}
+							onClick={onDelete}
+							aria-label="Delete task"
+							type="button"
+						>
+							<Icon name="trash" />
+						</button>
+					)}
+				</div>
 			</div>
 		</div>
 	);

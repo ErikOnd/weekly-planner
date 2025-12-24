@@ -103,6 +103,7 @@ export function Sidebar({ baseDate, setBaseDateAction, rangeLabel, todosState }:
 												checked={checkedTodos.has(todo.id)}
 												onToggle={checked => handleTodoToggle(todo.id, checked)}
 												onEdit={() => handleEditTodo(todo)}
+												onDelete={() => deleteTodo(todo.id)}
 											/>
 										))}
 									</SortableContext>
