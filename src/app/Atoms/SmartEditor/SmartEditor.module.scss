@@ -1,8 +1,8 @@
 @use "../../styles/typography" as typography;
 @use "../../styles/variables" as variables;
+@use "../../styles/mixins" as mixins;
 
 .smart-editor {
-	padding-block: var(--space-md);
 	@include typography.text-base;
 
 	:global {
@@ -10,6 +10,10 @@
 		.bn-editor {
 			background-color: var(--color-surface);
 			color: var(--color-text);
+
+			@media (max-width: 640px) {
+				padding: 1rem;
+			}
 		}
 
 		.bn-block-content {

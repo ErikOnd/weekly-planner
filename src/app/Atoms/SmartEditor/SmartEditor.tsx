@@ -11,6 +11,10 @@ import { filterSuggestionItems } from "@blocknote/core/extensions";
 import { SuggestionMenuController, useCreateBlockNote } from "@blocknote/react";
 import { useBlocknoteArrowUpFix } from "@hooks/useBlocknoteArrowUpFix";
 import { getSlashMenuItemsWithAliases } from "@utils/blocknoteSlashMenu";
+import useScreenSize from "@hooks/useScreenSize";
+import {BREAKPOINTS} from "../../constants";
+
+
 
 type SmartEditorProps = {
 	initialContent?: Block[];
@@ -25,6 +29,9 @@ export default function SmartEditor({ initialContent, onChange, ariaLabel }: Sma
 		initialContent,
 	});
 
+	const screenSize = useScreenSize();
+	const isNotMobile = screenSize.width > BREAKPOINTS.mobile;
+
 	useBlocknoteArrowUpFix(editor);
 
 	if (typeof window === "undefined" || !mounted) return null;
@@ -37,6 +44,7 @@ export default function SmartEditor({ initialContent, onChange, ariaLabel }: Sma
 			className={styles["smart-editor"]}
 			theme={effectiveTheme}
 			slashMenu={false}
+			sideMenu={isNotMobile}
 			onChange={() => {
 				if (onChange) {
 					onChange(editor.document);
