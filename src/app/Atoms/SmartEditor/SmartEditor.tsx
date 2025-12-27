@@ -10,11 +10,9 @@ import { type Block } from "@blocknote/core";
 import { filterSuggestionItems } from "@blocknote/core/extensions";
 import { SuggestionMenuController, useCreateBlockNote } from "@blocknote/react";
 import { useBlocknoteArrowUpFix } from "@hooks/useBlocknoteArrowUpFix";
-import { getSlashMenuItemsWithAliases } from "@utils/blocknoteSlashMenu";
 import useScreenSize from "@hooks/useScreenSize";
-import {BREAKPOINTS} from "../../constants";
-
-
+import { getSlashMenuItemsWithAliases } from "@utils/blocknoteSlashMenu";
+import { BREAKPOINTS } from "../../constants";
 
 type SmartEditorProps = {
 	initialContent?: Block[];
